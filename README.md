@@ -4,7 +4,7 @@
 Server consists of express connected to a local mongodb database
 
 ### `nodemon run`
-Runs the server with nodemon for development envioment
+Runs the server with nodemon for development envioment.\
 The server runs at localhost:1234 and api's runs from localhost:1234/api
 
 ## Client
