@@ -1,0 +1,22 @@
+@import "master";
+@import "functions";
+
+.test {
+  background-color: darkred;
+
+  a {
+    color: white;
+  }
+}
+.test2 {
+  background-color: darkgreen;
+
+  h1 {
+    color: white;
+  }
+}
+
+.taskcard {
+  border-radius: 5%;
+  box-shadow: 2x 2px 4px #b2b2b2;
+}

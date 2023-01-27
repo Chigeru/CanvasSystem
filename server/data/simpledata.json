@@ -1,0 +1,41 @@
+{
+  "worktasks": [
+    {
+      "id": 0,
+      "worktype": "fix",
+      "work": "something broken",
+      "description": "something is broken with a massive crack in it",
+      "dateCreated": "01-01-2023",
+      "dateStarted": "01-01-2023",
+      "dateUpdated": "01-01-2023",
+      "deadline": "01-01-2023",
+      "status": "objectId"
+    }
+  ],
+  "status": [
+    {
+      "id": 0,
+      "name": "Waiting"
+    },
+    {
+      "id": 1,
+      "name": "In process"
+    },
+    {
+      "id": 2,
+      "name": "Blocked by other task"
+    },
+    {
+      "id": 3,
+      "name": "Standby"
+    },
+    {
+      "id": 4,
+      "name": "Waiting for review"
+    },
+    {
+      "id": 5,
+      "name": "Done"
+    }
+  ]
+}
