@@ -6,19 +6,6 @@ function HomePage({ users }) {
 
   console.log(users);
 
-  // users.forEach((user) => {
-  //   testusers.push(
-  //     <div className="row taskcard" key={user.name}>
-  //     <div className="col-6">
-  //       <p>{user.name}</p>
-  //     </div>
-  //     <div className="col-6">
-  //       <p>{user.age}</p>
-  //     </div>
-  //   </div>
-  //   );
-  // });
-
   return (
     <div>
       <h1>Homepage</h1>

@@ -1,18 +1,44 @@
-const express = require("express");
+import express from "express";
+import dotenv from "dotenv";
+import bodyparser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+
+import general from "./routes/general.js";
+import inserts from "./routes/CRUD/Inserts.js";
+import updateData from "./routes/CRUD/updateData.js";
+import deleteData from "./routes/CRUD/deleteData.js"
+
+/* CONFIG */
+dotenv.config();
 const app = express();
-const worktasks = require('./routes/worktasks');
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(cors());
 
+const PORT = process.env.DEV_PORT || 8080;
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "localhost"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(`${process.env.MONGO_URI}${process.env.DB_TEST}`)
+  .catch((error) => console.log(`${error}. did not connect`));
+
+/* Routes */
+app.use("/api", general);
+app.use("/api/posts", inserts);
+app.use("/api/update", updateData);
+app.use("/api/delete", deleteData);
+
+app.get("/api", (req, res) => {
+  res.send("test if backend works");
 });
 
-app.use('/api/tasks', worktasks);
+app.get("/favicon.ico", (req, res) => {
+  res.sendFile("./public/favicon.png");
+});
 
-app.get("/api", (req,res) => {
-  res.send("test if backend works");
-})
-
-app.listen(1234, () => console.log(`Server is listening on port 1234`));
+app.listen(PORT, () =>
+  console.log(
+    `Server is in ${process.env.STATUS} mode, listening on port ${PORT}`
+  )
+);

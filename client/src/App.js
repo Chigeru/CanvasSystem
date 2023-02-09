@@ -9,6 +9,7 @@ import Layout from "./pages/Layout";
 import Home from "./pages/HomePage";
 import TaskDisplayList from "./pages/TaskDisplayListPage";
 import TaskDetailedOverview from "./pages/TaskDetailedOverviewPage";
+import AdminCreateStatus from "./pages/Admin/Create/AdminCreateStatus";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route index element={<Home users={users} />}></Route>
         <Route path="/worktasks" element={<TaskDisplayList />}></Route>
         <Route path="/:objectId" element={<TaskDetailedOverview />}></Route>
+        <Route path="/admin/create/status" element={<AdminCreateStatus />} />
       </Route>
     </Routes>
   );

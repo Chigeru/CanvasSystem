@@ -2,14 +2,15 @@
   "worktasks": [
     {
       "id": 0,
-      "worktype": "fix",
-      "work": "something broken",
+      "Category": "-taskCategory-",
+      "title": "something broken",
       "description": "something is broken with a massive crack in it",
       "dateCreated": "01-01-2023",
       "dateStarted": "01-01-2023",
       "dateUpdated": "01-01-2023",
       "deadline": "01-01-2023",
-      "status": "objectId"
+      "status": "-status-",
+      "users": ["sadf", "asdf", "sdfgn"]
     }
   ],
   "status": [
@@ -36,6 +37,33 @@
     {
       "id": 5,
       "name": "Done"
+    }
+  ],
+  "taskCategory": [
+    {
+      "id": 0,
+      "name": "Repair"
+    },
+    {
+      "id": 1,
+      "name": "Project"
+    },
+    {
+      "id": 2,
+      "name": "School"
+    },
+    {
+      "id": 3,
+      "name": "Misc"
+    },
+    {
+      "id": 4,
+      "name": "3D"
+    }
+  ],
+  "Users": [
+    {
+      "name": "Jake"
     }
   ]
 }
