@@ -1,4 +1,6 @@
 # Worktask app
+Elektronik afdelingen mangler et program til kunne holde overblik over hvem der arbejder på hvad og hvor langt de er.
+
 
 ## Server
 Server consists of express connected to a local mongodb database

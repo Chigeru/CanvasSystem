@@ -6,8 +6,8 @@ import cors from "cors";
 
 import general from "./routes/general.js";
 import inserts from "./routes/CRUD/Inserts.js";
-import updateData from "./routes/CRUD/updateData.js";
-import deleteData from "./routes/CRUD/deleteData.js"
+import updateData from "./routes/CRUD/UpdateData.js";
+import deleteData from "./routes/CRUD/DeleteData.js";
 
 /* CONFIG */
 dotenv.config();
@@ -29,12 +29,9 @@ app.use("/api/posts", inserts);
 app.use("/api/update", updateData);
 app.use("/api/delete", deleteData);
 
-app.get("/api", (req, res) => {
-  res.send("test if backend works");
-});
-
+// Console complain about missing favicon on json routes 
 app.get("/favicon.ico", (req, res) => {
-  res.sendFile("./public/favicon.png");
+  res.sendFile("./public/favicon.ico");
 });
 
 app.listen(PORT, () =>

@@ -3,9 +3,9 @@ import { updateStatus, updateTask, updateTaskCategory, updateUser } from '../../
 
 const router = express.Router();
 
-router.patch('/updateStatus', updateStatus);
-router.patch('/updateTask', updateTask);
-router.patch('/updateTaskCategory', updateTaskCategory);
-router.patch('/updateUser', updateUser);
+router.patch('/Status', updateStatus);
+router.patch('/Task', updateTask);
+router.patch('/TaskCategory', updateTaskCategory);
+router.patch('/User', updateUser);
 
 export default router;

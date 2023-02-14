@@ -3,9 +3,9 @@ import { deleteStatus, deleteTask, deleteTaskCategory, deleteUser } from '../../
 
 const router = express.Router();
 
-router.delete('/deleteStatus', deleteStatus);
-router.delete('/deleteTask', deleteTask);
-router.delete('/deleteTaskCategory', deleteTaskCategory);
-router.delete('/deleteUser', deleteUser);
+router.delete('/Status', deleteStatus);
+router.delete('/Task', deleteTask);
+router.delete('/TaskCategory', deleteTaskCategory);
+router.delete('/User', deleteUser);
 
 export default router;
