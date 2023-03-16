@@ -1,6 +1,6 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import HeadNavigation from '../components/layout/headNavigation'
+import HeadNavigation from './layout/headNavigation'
 
 function Layout() {
   return (

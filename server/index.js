@@ -4,10 +4,7 @@ import bodyparser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 
-import general from "./routes/general.js";
-import inserts from "./routes/CRUD/Inserts.js";
-import updateData from "./routes/CRUD/UpdateData.js";
-import deleteData from "./routes/CRUD/DeleteData.js";
+import crudRoutes from "./routes/CRUDRoutes.js";
 
 /* CONFIG */
 dotenv.config();
@@ -24,15 +21,7 @@ mongoose
   .catch((error) => console.log(`${error}. did not connect`));
 
 /* Routes */
-app.use("/api", general);
-app.use("/api/posts", inserts);
-app.use("/api/update", updateData);
-app.use("/api/delete", deleteData);
-
-// Console complain about missing favicon on json routes 
-app.get("/favicon.ico", (req, res) => {
-  res.sendFile("./public/favicon.ico");
-});
+app.use("/api", crudRoutes);
 
 app.listen(PORT, () =>
   console.log(

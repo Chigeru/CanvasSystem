@@ -1,0 +1,18 @@
+
+
+/* Colors */
+$primary :    #af0c0c;
+$secondary:   #bdbdbd;
+$success :    #179c17;
+$info:        cyan;
+$warning:     yellow;
+$danger:      red;
+$light:       #ededed;
+$dark:        #121212;
+
+$fontcolor: gray;
+
+
+@mixin transition($duration: 0.45s) {
+  transition: all $duration cubic-bezier(0.65,0,.076,1);
+}

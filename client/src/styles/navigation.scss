@@ -1,2 +1,21 @@
 @import "master";
 @import "functions";
+
+
+nav {
+  display: inline-block;
+
+  // default layer
+  ul {
+    li {
+      display: inline-block;
+      list-style-type: none;
+      
+      a, p {
+        display: inline-block;
+        color: $fontcolor;
+        text-decoration: none;
+      }
+    }
+  }
+}

@@ -6,8 +6,8 @@ const TaskStatusSchema = new mongoose.Schema(
       type: String,
       required: true
     }
-  }
+  }, {versionKey: false}
 );
 
-const TaskStatus = mongoose.model("TaskStatus", TaskStatusSchema);
+const TaskStatus = mongoose.model("Task_Status", TaskStatusSchema);
 export default TaskStatus;

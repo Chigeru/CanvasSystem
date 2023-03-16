@@ -8,15 +8,154 @@
     color: white;
   }
 }
-.test2 {
-  background-color: darkgreen;
 
-  h1 {
-    color: white;
+
+
+
+
+.link-categoryPageRef {
+  padding: 0.5rem 1.5rem;
+  color: $light;
+
+  &:hover {
+    color: $secondary;
   }
 }
 
-.taskcard {
-  border-radius: 5%;
-  box-shadow: 2x 2px 4px #b2b2b2;
+header {
+  background-color: $primary;
+  padding-top: 5px;
+
+}
+
+section {
+  padding: 0.5rem;
+}
+
+.info-task-card {
+  border-radius: 1.65rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(220,220,220, 0.4);
+}
+
+.search-input {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1.625rem;
+  border-width: 1px;
+  border-color: rgba(120, 120, 120, 0.3);
+  margin: 0.5rem auto;
+}
+table {
+  width: 100%;
+  tr {
+    
+    &:nth-of-type(odd) {
+      background-color: rgba(240, 240, 240, 0.4);
+    }
+    &:hover {
+      background-color: rgba(220, 220, 220, 0.4);
+    }
+    td:nth-last-child(1) {
+      text-align: right;
+    }
+  }
+  
+  td {    
+    padding: 0.25rem 0.125rem;
+  }
+  .btn-edit {
+    border: 1px solid $light;
+    background-color: $info;
+    border-radius: 1.625rem;
+  }
+  .btn-delete {
+    border: 1px solid $dark;
+    background-color: $danger;
+    border-radius: 1.625rem;
+  }
+}
+
+.btn-add-another {
+  display: inline-block;
+  border: none;
+  background-color: $primary;
+  padding: 4px 28px;
+  border-radius: 8px;
+  span {
+    display: block;
+    position: relative;
+    font-size: 14px;
+    padding-left: 24px;
+    margin-left: -8px;
+    line-height: 2rem;
+    color: white;
+    &:before, &:after {
+            content: '';
+            width: var(--w, 2px);
+            height: var(--h, 15px);
+            border-radius: 1px;
+            position: absolute;
+            left: var(--l, 8px);
+            top: var(--t, 9px);
+            background: white;
+            transform: scale(.8);
+        }
+        &:after {
+            --w: 15px;
+            --h: 2px;
+            --l: 2px;
+            --t: 15px;
+        }
+  }
+}
+
+
+
+.popout-dark-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(50, 50, 50, 0.5);
+  z-index: 0;
+  
+  .popout-panel {
+    position: inherit;
+    background-color: $light;
+    min-width: 300px;
+    min-height: 100px;
+    padding: 5px;
+    box-shadow: 0px 0px 10px #222222;
+    z-index: 1;
+
+    &.left {
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    &.right {
+      top: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    .form-vertical {
+      & > * {
+        display: block; 
+      }
+      input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.side-panel-overview {
+  min-width: 150px;
+  min-height: 95vh;
+  border-right: 1px solid rgba(100, 100, 100, 0.5);
+  background-color: #dbdbdb;
+  bottom: 0;
 }

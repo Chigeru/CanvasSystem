@@ -1,14 +1,20 @@
 import { Route, Routes } from "react-router-dom";
-import "./styles/styling.scss";
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import { useEffect, useState } from "react";
 
 
-import Layout from "./pages/Layout";
+import Layout from "./components/Layout";
 import Home from "./pages/HomePage";
-import TaskDisplayList from "./pages/TaskDisplayListPage";
-import TaskDetailedOverview from "./pages/TaskDetailedOverviewPage";
+import TaskDisplayList from "./pages/Front/TaskDisplayListPage";
+import TaskDetailedOverview from "./pages/Front/TaskDetailedOverviewPage";
+
+import LoginPage from "./pages/LoginPage";
+
+import AdminLayout from "./pages/Admin/AdminLayout";
 import AdminCreateStatus from "./pages/Admin/Create/AdminCreateStatus";
+import AdminFrontPage from "./pages/Admin/AdminFrontpagePage";
+import AdminCategoryOverviewPage from "./pages/Admin/Create/AdminCategoryOverviewPage";
+
+import TableLayout from "./components/Admin/InformaitionWindow/TableLayout";
+
 
 function App() {
 
@@ -17,12 +23,32 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />}></Route>
-        <Route path="/worktasks" element={<TaskDisplayList />}></Route>
-        <Route path="/:objectId" element={<TaskDetailedOverview />}></Route>
-        <Route path="/admin/create/status" element={<AdminCreateStatus />} />
+        <Route path="tasks" element={<TaskDisplayList />}>
+          <Route path=":id" element={<TaskDetailedOverview />}></Route>
+        </Route>
+      </Route>
+      <Route path="/login" element={<LoginPage />}/>
+      <Route path="/admin" element={<AdminLayout />} onEnter={requireAuth}>
+        <Route index element={<AdminFrontPage />}/>
+        <Route path="test" element={<AdminFrontPage />} />
+        <Route path="status" element={<AdminCreateStatus />} />
+        <Route path="dataoverview" element={<AdminCategoryOverviewPage />} >
+          <Route path=":category" element={<TableLayout />}></Route>
+        </Route>
       </Route>
     </Routes>
   );
+}
+
+function requireAuth(nextState, replace, next) {
+  console.log(this.state.loggedInStatus);
+  if (!this.state.loggedInStatus.contains("LOGGED_IN")) {
+    replace({
+      pathname: "/login",
+      state: {nextPathname: nextState.location.pathname}
+    });
+  }
+  next();
 }
 
 export default App;
