@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
 );
 
 function IsLoginRequired() {
-  return typeof this.accesslevel.level >= 10 ? true : false;
+  return this.accesslevel.level >= 20 ? true : false;
 }
 
 const User = mongoose.model("Users", UserSchema);

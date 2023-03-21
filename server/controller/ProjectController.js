@@ -1,4 +1,5 @@
-import Project from '../Models/Project.js';
+import Project from '../Models/Mongodb/Project.js';
+import TaskCategory from '../Models/TaskWorkflow.js';
 
 
 export const getProject_list = async (req, res) => {
@@ -13,8 +14,8 @@ export const getProject_list = async (req, res) => {
 
 export const getProject_details = async (req, res) => {
   try {
-    const { id }  = req.params;
-    const project = await project.findOne({_id: id});
+    const { projectid }  = req.params;
+    const project = await Project.findOne({_id: projectid});
     
     res.status(200).json(project);
   } catch (error) {
@@ -45,9 +46,9 @@ export const postProject = async (req, res) => {
 export const updateProject = async (req, res) => {
 
   try {
-    const id = req.body._id;
+    const id = req.params.projectId;
     const updatedEntity = req.body;
-    const options = { new: true };
+    const options = { new: false };
     const result = await Project.findByIdAndUpdate(id, updatedEntity, options);
 
     res.status(200).send(result);
@@ -60,8 +61,8 @@ export const deleteProject = async (req, res) => {
 
   try {
     const id = req.body._id;
-    const result = await Project.findByIdAndDelete(id);
-    res.status(200).send(`Deleted: ${result.title}`);
+    await Project.findByIdAndDelete(id);
+    res.status(200).send(`Deleted: ${id}`);
   } catch (error) {
     res.status(404).json({ message: error });
   }

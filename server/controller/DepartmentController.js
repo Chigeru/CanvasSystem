@@ -1,4 +1,4 @@
-import Department from '../Models/Department.js';
+import Department from '../Models/Mongodb/Department.js';
 
 export const getDepartment_list = async (req, res) => {
   try {

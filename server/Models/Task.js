@@ -3,17 +3,18 @@ import mongoose from "mongoose";
 const TaskSchema = new mongoose.Schema(
   {
     worktype: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Task_Category",
+      type: String,
       required: true,
     },
-    title: String,
+    title: {
+      type: String,
+      required: true
+    },
     description: String,
     deadline: Date,
     startedAt: Date,
     status: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Task_Status",
+      type: Object,
       required: true,
     },
     users: [{ type: mongoose.Schema.ObjectId, ref: "Users" }],

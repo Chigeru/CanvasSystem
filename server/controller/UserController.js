@@ -1,9 +1,10 @@
-import User from '../models/User.js';
+import User from '../models/Mongodb/User.js';
 
 
 export const getUser_list = async (req, res) => {
   try {
-    const statuses = await User.find({}).populate('department', '-__v').select('-_id -email -password -__v');
+    // const statuses = await User.find({}).populate('department', '-__v').select('-_id -email -password -__v');
+    const statuses = await User.find({})
     res.status(200).json(statuses);
   } catch (error) {
     res.status(404).json({message: error});
@@ -12,19 +13,22 @@ export const getUser_list = async (req, res) => {
 
 export const getUser_details = async (req, res) => {
   try {
-    const { _id } = req.params;
-    const statuses = await User.findById(_id).populate('department', '-__v').select('-_id -email -password -__v');
+    const { id } = req.params;
+    const statuses = await User.findById(id).populate('department', '-__v').select('-_id -email -password -__v');
     res.status(200).json(statuses);
   } catch (error) {
     res.status(404).json({message: error});
   }
 }
 
-
 export const postUser = async (req, res) => {
 
   const data = new User({
-    name: req.body.name
+    name: req.body.name,
+    department: req.body.department,
+    accesslevel: req.body.accesslevel,
+    email: req.body.email,
+    password: req.body.password
   });
   
   try {

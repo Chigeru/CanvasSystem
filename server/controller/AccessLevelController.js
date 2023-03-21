@@ -1,4 +1,4 @@
-import AccessLevel from "../Models/AccessLevel.js";
+import AccessLevel from "../Models/Mongodb/AccessLevel.js";
 
 
 

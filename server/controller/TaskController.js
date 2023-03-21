@@ -1,9 +1,11 @@
+import Project from '../Models/Mongodb/Project.js';
 import Task from '../Models/Task.js';
 
 
 export const getTask_list = async (req, res) => {
+  const { projectid } = req.params; 
   try {
-    const tasks = await Task.find({}).populate("worktype", "-__v").populate("status", "-__v").populate("users", "-__v");
+    const tasks = await Project.find({_id: projectid}).select("tasks");
     
     res.status(200).json(tasks);
   } catch (error) {
@@ -13,8 +15,9 @@ export const getTask_list = async (req, res) => {
 
 export const getTask_details = async (req, res) => {
   try {
-    const { id }  = req.params;
-    const task = await Task.findOne({_id: id}).populate("worktype", "-__v").populate("status", "-__v").populate("users", "-__v");
+    const { projectid }  = req.params;
+    const { taskid } = req.params;
+    const task = await Project.findOne({_id: projectid}).findById(taskid);
     
     res.status(200).json(task);
   } catch (error) {
@@ -34,8 +37,9 @@ export const postTask = async (req, res) => {
     users: req.body.users
   });
 
+  
   try {
-    const dataToSave = await data.save();
+    // const dataToSave = await data.save();
     res.status(200).json(dataToSave);
   } catch (error) {
     res.status(404).json({message: error.message});
