@@ -3,15 +3,15 @@ import mongoose from "mongoose";
 const ProjectSchema = new mongoose.Schema(
   {
     name: String,
-    tasks: [{type: Object}],
+    tasks: [{type: mongoose.Schema.ObjectId, ref: "Tasks", default: () => []}],
+    workflows: [{ type: mongoose.Schema.ObjectId, ref: "Workflows", default: () => [] }],
+    labels: [{ type: mongoose.Schema.ObjectId, ref: "TaskLabels", default: () => [] }],
+    users: [{ type: mongoose.Schema.ObjectId, ref: "Users", default: () => [] }],
     deadline: Date,
     startedAt: Date,
-    workflows: [{ type: Object }],
-    labels: [{ type: Object }],
-    users: [{ type: mongoose.Schema.ObjectId, ref: "Users" }],
   },
   { timestamps: true, versionKey: false}
 );
 
-const Project = mongoose.model("Project", ProjectSchema);
+const Project = mongoose.model("Projects", ProjectSchema);
 export default Project;

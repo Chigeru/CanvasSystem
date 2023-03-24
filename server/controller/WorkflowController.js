@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import Project from "../Models/Mongodb/Project.js";
+import Workflow from "../Models/Mongodb/Workflow.js"
 
 /* Enum to check if the right inputed type exist */
 const workflowTypes = {
@@ -11,7 +12,7 @@ const workflowTypes = {
 export const getTaskWorkflow_list = async (req, res) => {
   try {
     const { projectid } = req.params;
-    const project = await Project.findById(projectid).select("workflows");
+    const project = await Project.findById(projectid).select("workflows").populate("workflows");
     res.status(200).json(project.workflows);
   } catch (error) {
     res.status(404).json({ message: error });
@@ -39,19 +40,17 @@ export const postTaskWorkflow = async (req, res) => {
   
   try {
     const { projectid } = req.params;
-    const data = {
-      _id: new ObjectId().toString(),
-      name: req.body.name,
-      type: workflowTypes[req.body.type],
-    };
 
-    if (data.type === undefined) {
-      res.status(404).json({ message: "Undefined data for workflows type" });
-    } 
-    else { 
-      const result = await Project.findOneAndUpdate({ _id: projectid, $push: { workflows: data } });
-      res.status(200).json(data);
-    }
+    const data = new Workflow({
+      name: req.body.name,
+      type: req.body.type,
+    })
+
+    const dataToSave = await data.save();
+
+    
+    const result = await Project.findOneAndUpdate({ _id: projectid, $push: { workflows: data } });
+    res.status(200).json(dataToSave);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -81,7 +80,8 @@ export const deleteTaskWorkflow = async (req, res) => {
   try {
     const { projectid } = req.params;
 
-    const result = await Project.findOneAndUpdate({_id: projectid, $pull: { workflows: { _id: req.body._id } }});
+    const result = await Project.findOneAndUpdate({_id: projectid, $pull: { workflows: { $in: req.body._id } }});
+    await Workflow.findByIdAndDelete(req.body._id);
 
     res.status(200).send(result);
   } catch (error) {

@@ -28,7 +28,8 @@ export const postUser = async (req, res) => {
     department: req.body.department,
     accesslevel: req.body.accesslevel,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    active: req.body.active
   });
   
   try {
@@ -58,9 +59,14 @@ export const deleteUser = async (req, res) => {
 
   try {
     const id = req.body._id;
-    const result = await User.findByIdAndDelete(id);
-    res.status(200).send(`Deleted: ${result.name}`);
+    try{
+      await User.deleteOne({_id: id});
+    } catch(err){
+      console.log(err.message);
+    }
+    // const result = await User.findByIdAndDelete(id);
+    res.status(200).send(`Deleted: ${id}`);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 }

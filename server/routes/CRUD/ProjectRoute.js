@@ -2,7 +2,7 @@ import express from 'express';
 
 import { getProject_list, getProject_details, postProject, updateProject, deleteProject } from '../../controller/ProjectController.js'
 import TaskRoutes from './TaskRoute.js';
-import TaskWorkflowRoutes from './TaskWorkflowRoute.js';
+import WorkflowRoutes from './WorkflowRoute.js';
 import TaskLabelRoutes from './TaskLabelRoute.js';
 
 
@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 router.use('/:projectid/labels', TaskLabelRoutes);
-router.use('/:projectid/workflow', TaskWorkflowRoutes);
+router.use('/:projectid/workflow', WorkflowRoutes);
 router.use('/:projectid/task', TaskRoutes);
 
 router.get('/all', getProject_list);

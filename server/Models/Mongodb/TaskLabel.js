@@ -10,7 +10,5 @@ const TaskLabelSchema = new mongoose.Schema(
   }, {versionKey: false}
 );
 
-// const TaskLabel = mongoose.model("Task_Label", TaskLabelSchema);
-// export default TaskLabel;
-
-export default TaskLabelSchema;
+const TaskLabel = mongoose.model("TaskLabels", TaskLabelSchema);
+export default TaskLabel;

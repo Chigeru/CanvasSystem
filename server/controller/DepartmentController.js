@@ -25,7 +25,8 @@ export const postDepartment = async (req, res) => {
 
   const data = new Department({
     name : req.body.name,
-    projects : req.body.projects
+    projects : req.body.projects,
+    users: req.body.users
   });
 
   try {

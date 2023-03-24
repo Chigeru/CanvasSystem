@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import Project from "../Models/Mongodb/Project.js";
+import TaskLabel from "../Models/Mongodb/TaskLabel.js";
 
 export const getTaskLabel_list = async (req, res) => {
   try {
@@ -7,7 +8,7 @@ export const getTaskLabel_list = async (req, res) => {
     const project = await Project.findById(projectid).select("labels");
     res.status(200).json(project.labels);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -24,23 +25,25 @@ export const getTaskLabel_details = async (req, res) => {
     })
     res.status(200).json(labelData);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 };
 
 export const postTaskLabel = async (req, res) => {
   try {
     const { projectid } = req.params;
-    const label = {
-      _id: new ObjectId().toString(),
-      name: req.body.name,
-      color: req.body.color,
-    };
-    await Project.findOneAndUpdate({ _id: projectid, $push: { labels: label } });
 
-    res.status(200).json();
+    const data = new TaskLabel({
+      name: req.body.name,
+      color: req.body.color
+    })
+
+    const dataToSave = await data.save();
+    await Project.findOneAndUpdate({ _id: projectid, $push: { labels: dataToSave } });
+
+    res.status(200).json(dataToSave);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -53,7 +56,7 @@ export const updateTaskLabel = async (req, res) => {
 
     res.status(200).send(result);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -61,9 +64,10 @@ export const deleteTaskLabel = async (req, res) => {
   try {
     const { projectid } = req.params;
     
-    const result = await Project.findOneAndUpdate({ _id: projectid, $pull: { labels: {_id: req.body._id} } });
+    await TaskLabel.findByIdAndDelete(req.body._id);
+    const result = await Project.findOneAndUpdate({ _id: projectid, $pull: { labels: { $in: req.body._id} } });
     res.status(200).send(`Deleted: ${result}`);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 };
