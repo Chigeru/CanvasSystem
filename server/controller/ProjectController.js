@@ -59,12 +59,10 @@ export const updateProject = async (req, res) => {
 export const deleteProject = async (req, res) => {
 
   try {
-    const {projectid, departmentid} = req.body;
-    const result = await Department.findOneAndUpdate({_id: departmentid}, {$pull: { projects: { $in: projectid } }});
-    
-    await Project.findByIdAndDelete(projectid);
-    res.status(200).send(`Deleted: ${projectid} from ${departmentid}`);
+    const {projectid} = req.body;
+    await Project.deleteOne({_id : projectid});
+    res.status(200).send(`Deleted project`);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(404).json({ message: error.message });
   }
 }
