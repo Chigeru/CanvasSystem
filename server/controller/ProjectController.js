@@ -1,10 +1,10 @@
-import Project from '../Models/Mongodb/Project.js';
-import Department from '../Models/Mongodb/Department.js';
+import ProjectMongoose from '../Models/Mongodb/Project.js';
+import DepartmentMongoose from '../Models/Mongodb/Department.js';
 
 export const getProject_list = async (req, res) => {
   try {
     
-    const projects = typeof req.body.department === 'undefined' ? await Project.find({}) :await Department.findById(req.body.department).select('projects').populate('projects');
+    const projects = typeof req.body.department === 'undefined' ? await ProjectMongoose.find({}) :await DepartmentMongoose.findById(req.body.department).select('projects').populate('projects');
     
     res.status(200).json(projects);
   } catch (error) {
@@ -15,7 +15,7 @@ export const getProject_list = async (req, res) => {
 export const getProject_details = async (req, res) => {
   try {
     const { projectid }  = req.params;
-    const project = await Project.findOne({_id: projectid});
+    const project = await ProjectMongoose.findOne({_id: projectid}).populate("tasks workflows");
     
     res.status(200).json(project);
   } catch (error) {
@@ -27,7 +27,7 @@ export const postProject = async (req, res) => {
 
   
   try {
-    const data = new Project({
+    const data = new ProjectMongoose({
       name : req.body.name,
       users : req.body.users,
       deadline : req.body.deadline,
@@ -45,10 +45,10 @@ export const postProject = async (req, res) => {
 export const updateProject = async (req, res) => {
 
   try {
-    const id = req.params.projectId;
+    const id = req.body._id;
     const updatedEntity = req.body;
-    const options = { new: false };
-    const result = await Project.findByIdAndUpdate(id, updatedEntity, options);
+    const options = { new: false, returnOriginal: false };
+    const result = await ProjectMongoose.findByIdAndUpdate(id, updatedEntity, options).select("name createdAt updatedAt users");
 
     res.status(200).send(result);
   } catch (error) {
@@ -60,7 +60,7 @@ export const deleteProject = async (req, res) => {
 
   try {
     const {projectid} = req.body;
-    await Project.deleteOne({_id : projectid});
+    await ProjectMongoose.deleteOne({_id : projectid});
     res.status(200).send(`Deleted project`);
   } catch (error) {
     res.status(404).json({ message: error.message });

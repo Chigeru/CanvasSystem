@@ -1,8 +1,8 @@
-import Department from '../Models/Mongodb/Department.js';
+import DepartmentMongoose from '../Models/Mongodb/Department.js';
 
 export const getDepartment_list = async (req, res) => {
   try {
-    const departments = await Department.find({});
+    const departments = await DepartmentMongoose.find({});
     
     res.status(200).json(departments);
   } catch (error) {
@@ -13,7 +13,7 @@ export const getDepartment_list = async (req, res) => {
 export const getDepartment_details = async (req, res) => {
   try {
     const { id }  = req.params;
-    const department = await Department.findOne({_id: id});
+    const department = await DepartmentMongoose.findOne({_id: id});
     
     res.status(200).json(department);
   } catch (error) {
@@ -23,7 +23,7 @@ export const getDepartment_details = async (req, res) => {
 
 export const postDepartment = async (req, res) => {
 
-  const data = new Department({
+  const data = new DepartmentMongoose({
     name : req.body.name,
     projects : req.body.projects,
     users: req.body.users
@@ -43,7 +43,7 @@ export const updateDepartment = async (req, res) => {
     const id = req.body._id;
     const updatedEntity = req.body;
     const options = { new: true };
-    const result = await Department.findByIdAndUpdate(id, updatedEntity, options);
+    const result = await DepartmentMongoose.findByIdAndUpdate(id, updatedEntity, options);
 
     res.status(200).send(result);
   } catch (error) {
@@ -55,7 +55,7 @@ export const deleteDepartment = async (req, res) => {
 
   try {
     const id = req.body._id;
-    const result = await Department.findByIdAndDelete(id);
+    const result = await DepartmentMongoose.findByIdAndDelete(id);
     res.status(200).send(`Deleted: ${result.title}`);
   } catch (error) {
     res.status(404).json({ message: error });

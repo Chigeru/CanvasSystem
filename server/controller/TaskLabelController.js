@@ -1,11 +1,10 @@
-import { ObjectId } from "mongodb";
-import Project from "../Models/Mongodb/Project.js";
-import TaskLabel from "../Models/Mongodb/TaskLabel.js";
+import ProjectMongoose from "../Models/Mongodb/Project.js";
+import TaskLabelMongoose from "../Models/Mongodb/TaskLabel.js";
 
 export const getTaskLabel_list = async (req, res) => {
   try {
     const { projectid } = req.params;
-    const project = await Project.findById(projectid).select("labels");
+    const project = await ProjectMongoose.findById(projectid).select("labels");
     res.status(200).json(project.labels);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -15,7 +14,7 @@ export const getTaskLabel_list = async (req, res) => {
 export const getTaskLabel_details = async (req, res) => {
   try {
     const { projectid, labelid } = req.params;
-    const project = await Project.findById(projectid);
+    const project = await ProjectMongoose.findById(projectid);
     
     let labelData = {};
     project.labels.forEach(label => {
@@ -33,13 +32,13 @@ export const postTaskLabel = async (req, res) => {
   try {
     const { projectid } = req.params;
 
-    const data = new TaskLabel({
+    const data = new TaskLabelMongoose({
       name: req.body.name,
       color: req.body.color
     })
 
     const dataToSave = await data.save();
-    await Project.findOneAndUpdate({ _id: projectid, $push: { labels: dataToSave } });
+    await ProjectMongoose.findOneAndUpdate({ _id: projectid, $push: { labels: dataToSave } });
 
     res.status(200).json(dataToSave);
   } catch (error) {
@@ -52,7 +51,7 @@ export const updateTaskLabel = async (req, res) => {
     const { projectid } = req.params;
     const updatedEntity = req.body;
 
-    const result = await Project.updateOne({_id: projectid, "labels._id": req.body._id}, {$set: {"labels.$": updatedEntity}});
+    const result = await ProjectMongoose.updateOne({_id: projectid, "labels._id": req.body._id}, {$set: {"labels.$": updatedEntity}});
 
     res.status(200).send(result);
   } catch (error) {
@@ -64,8 +63,8 @@ export const deleteTaskLabel = async (req, res) => {
   try {
     const { projectid } = req.params;
     
-    await TaskLabel.findByIdAndDelete(req.body._id);
-    const result = await Project.findOneAndUpdate({ _id: projectid, $pull: { labels: { $in: req.body._id} } });
+    await TaskLabelMongoose.findByIdAndDelete(req.body._id);
+    const result = await ProjectMongoose.findOneAndUpdate({ _id: projectid, $pull: { labels: { $in: req.body._id} } });
     res.status(200).send(`Deleted: ${result}`);
   } catch (error) {
     res.status(404).json({ message: error.message });

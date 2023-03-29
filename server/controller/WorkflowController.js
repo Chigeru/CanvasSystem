@@ -1,6 +1,5 @@
-import { ObjectId } from "mongodb";
-import Project from "../Models/Mongodb/Project.js";
-import Workflow from "../Models/Mongodb/Workflow.js"
+import ProjectMongoose from "../Models/Mongodb/Project.js";
+import WorkflowMongoose from "../Models/Mongodb/Workflow.js"
 
 /* Enum to check if the right inputed type exist */
 const workflowTypes = {
@@ -12,7 +11,7 @@ const workflowTypes = {
 export const getTaskWorkflow_list = async (req, res) => {
   try {
     const { projectid } = req.params;
-    const project = await Project.findById(projectid).select("workflows").populate("workflows");
+    const project = await ProjectMongoose.findById(projectid).select("workflows").populate("workflows");
     res.status(200).json(project.workflows);
   } catch (error) {
     res.status(404).json({ message: error });
@@ -22,7 +21,7 @@ export const getTaskWorkflow_list = async (req, res) => {
 export const getTaskWorkflow_details = async (req, res) => {
   try {
     const { projectid, name: workflowid } = req.params;
-    const project = await Project.findById(projectid);
+    const project = await ProjectMongoose.findById(projectid);
 
     let workflowData = {};
     project.workflows.forEach((workflow) => {
@@ -41,7 +40,7 @@ export const postTaskWorkflow = async (req, res) => {
   try {
     const { projectid } = req.params;
 
-    const data = new Workflow({
+    const data = new WorkflowMongoose({
       name: req.body.name,
       type: req.body.type,
     })
@@ -49,7 +48,7 @@ export const postTaskWorkflow = async (req, res) => {
     const dataToSave = await data.save();
 
     
-    const result = await Project.findOneAndUpdate({ _id: projectid, $push: { workflows: data } });
+    const result = await ProjectMongoose.findOneAndUpdate({ _id: projectid, $push: { workflows: data } });
     res.status(200).json(dataToSave);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -68,7 +67,7 @@ export const updateTaskWorkflow = async (req, res) => {
     if (updatedEntity.type === undefined) {
       res.status(404).json({ message: "Undefined data for workflows type" });
     } else {
-      const result = await Project.updateOne({ _id: projectid, "workflows._id": req.body._id}, {$set: { "workflows.$": updatedEntity } });
+      const result = await ProjectMongoose.updateOne({ _id: projectid, "workflows._id": req.body._id}, {$set: { "workflows.$": updatedEntity } });
       res.status(200).send(result);
     }
   } catch (error) {
@@ -80,8 +79,8 @@ export const deleteTaskWorkflow = async (req, res) => {
   try {
     const { projectid } = req.params;
 
-    const result = await Project.findOneAndUpdate({_id: projectid, $pull: { workflows: { $in: req.body._id } }});
-    await Workflow.findByIdAndDelete(req.body._id);
+    const result = await ProjectMongoose.findOneAndUpdate({_id: projectid, $pull: { workflows: { $in: req.body._id } }});
+    await WorkflowMongoose.findByIdAndDelete(req.body._id);
 
     res.status(200).send(result);
   } catch (error) {
