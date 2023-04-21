@@ -5,7 +5,7 @@ import { getDepartment_list, getDepartment_details, postDepartment, updateDepart
 const router = express.Router();
 
 
-router.get('/all', getDepartment_list);
+router.get('/', getDepartment_list);
 router.get('/:id', getDepartment_details);
 router.post('/post', postDepartment);
 router.patch('/update', updateDepartment);

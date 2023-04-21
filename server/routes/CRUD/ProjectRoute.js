@@ -13,7 +13,7 @@ router.use('/:projectid/labels', TaskLabelRoutes);
 router.use('/:projectid/task', TaskRoutes);
 router.use('/:projectid/workflow', WorkflowRoutes);
 
-router.get('/all', getProject_list);
+router.get('/', getProject_list);
 router.get('/:projectid', getProject_details);
 router.post('/post', postProject);
 router.patch('/update', updateProject);

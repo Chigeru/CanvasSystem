@@ -5,7 +5,7 @@ import { getUser_list, getUser_details, postUser, updateUser, deleteUser } from 
 const router = express.Router();
 
 
-router.get('/all', getUser_list);
+router.get('/', getUser_list);
 router.get('/:id', getUser_details);
 router.post('/post', postUser);
 router.patch('/update', updateUser);

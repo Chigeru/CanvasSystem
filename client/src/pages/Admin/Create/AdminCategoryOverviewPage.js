@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import TableLayout from "../../../components/Admin/InformaitionWindow/TableLayout";
 
 function AdminCategoryOverviewPage() {
   return (
@@ -9,18 +8,18 @@ function AdminCategoryOverviewPage() {
         Sidepanel - categories
         <ul>
           <li>
-            <Link to="tasks">Tasks</Link>
+            <Link to="project">Projects</Link>
             <ul>
               <li>
-                <Link to="taskstatus">Statuses</Link>
+                <Link to="task">Tasks</Link>
               </li>
               <li>
-                <Link to="taskcategories">Categories</Link>
+                <Link to="category">Categories</Link>
               </li>
             </ul>
           </li>
           <li>
-            <Link to="users">Users</Link>
+            <Link to="user">Users</Link>
           </li>
         </ul>
       </section>

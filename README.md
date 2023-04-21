@@ -7,8 +7,8 @@ There are plans for this information to be displayed on screens outside the room
 ## Server
 Server consists of the following modules:
 * Express
+* Express-session
 * Mongoose
-* MongoDB
 
 The server uses Mongoose in order to connect to MongoDB.<br>
 It also controls most of the functionality for creating, updating and deletion of entities since MongoDB doesn't have too much administration functionality of its collections
@@ -19,7 +19,7 @@ The server runs at localhost and api's runs from localhost/api (port is configur
 
 ## Client
 The client uses React for frontend with SCSS for easier styling management.<br>
-In order to communicate with the server, Axios is used for consistency and easy code accessability and visibility.
+In order to communicate with the server, Axios is used for consistency, easy data accessability and easy readable code.
 ### `npm start`
 
 position your navigation in the client and run the code above, it'll start up the client in development mode.<br>

@@ -7,6 +7,7 @@ import PopoutPanel from "../../PopoutPanel.js";
 
 function TableLayout() {
   const [dataInformation, setDataInformation] = useState([]);
+  const [searchData, setSearchData] = useState([]);
 
   let { category } = useParams();
 
@@ -32,11 +33,15 @@ function TableLayout() {
     console.log(`Deleted: ${item._id}`);
   }
 
+  function ShowSearchedItem(item, key) {
+    if(searchData !== "") {}
+  }
+
   function displayTable() {
     if (dataInformation.length > 0) {
       return (
         <div>
-            <input type="text" placeholder="Search" className="search-input"/>
+            <input type="text" placeholder="Search" className="search-input" id="tableSearcher"/>
         <table className="tabletest">
           <thead></thead>
           <tbody>
@@ -45,7 +50,6 @@ function TableLayout() {
                 <tr key={key}>
                   <td>{key}</td>
                   <td>{item.name}</td>
-                  {console.log(item)}
                   <td>
                     <button className="btn-edit" onClick={() => EditSelectedItem(item)}>
                       Edit

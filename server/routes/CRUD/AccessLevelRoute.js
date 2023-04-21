@@ -5,7 +5,7 @@ import { getAccessLevel_list, getAccessLevel_details, postAccessLevel, updateAcc
 const router = express.Router();
 
 
-router.get('/all', getAccessLevel_list);
+router.get('/', getAccessLevel_list);
 router.get('/:id', getAccessLevel_details);
 router.post('/post', postAccessLevel);
 router.patch('/update', updateAccessLevel);
