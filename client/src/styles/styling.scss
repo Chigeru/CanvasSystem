@@ -1,6 +1,18 @@
 @import "master";
 @import "functions";
 
+#root {
+  min-height: 100vh;
+  & > div {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  & > div > :nth-child(2) {
+    flex: 1;
+  }
+}
+
 a {
   &.linkref {
     color: unset;
@@ -17,9 +29,6 @@ a {
     }
   }
 }
-
-
-
 
 header {
   background-color: $primary;
@@ -89,6 +98,7 @@ footer {
   background-color: $primary;
   color: white;
   margin-bottom: 0px;
+  margin-top: auto;
 
   p {
     margin-left: auto;
@@ -97,9 +107,7 @@ footer {
   }
 }
 
-#root {
-  min-height: 100vh;
-}
+
 
 
 /* ------ Project list ------- */

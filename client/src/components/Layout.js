@@ -6,8 +6,9 @@ function Layout() {
   return (
     <div>
       <HeadNavigation />
-      
+
       <Outlet />
+      
 
       <footer>
         <p>
