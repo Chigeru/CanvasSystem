@@ -1,21 +1,48 @@
 @import "master";
 @import "functions";
 
-
-nav {
-  display: inline-block;
-
-  // default layer
-  ul {
-    li {
-      display: inline-block;
-      list-style-type: none;
-      
-      a, p {
+header {
+  nav.navigation {
+    display: inline-block;
+  
+    // default layer
+    ul {
+      li {
         display: inline-block;
-        color: $fontcolor;
-        text-decoration: none;
+        list-style-type: none;
+        
+        a {
+          display: inline-block;
+          color: $light;
+          text-decoration: none;
+  
+          &:hover {
+            color: $secondary;
+          }
+        }
+  
+        p {
+          display: inline-block;
+          color: $fontcolor;
+        }
       }
+    }
+  
+    & > ul {
+      li {
+        padding: 0.5rem 1.5rem;
+      }
+  
     }
   }
 }
+
+
+// .link-categoryPageRef {
+//   padding: 0.5rem 1.5rem;
+//   color: $light;
+
+//   &:hover {
+//     color: $secondary;
+//   }
+// }

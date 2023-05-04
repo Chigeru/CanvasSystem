@@ -9,14 +9,14 @@ function AdminCategoryOverviewPage() {
         <ul>
           <li>
             <Link to="project">Projects</Link>
-            <ul>
+            {/* <ul>
               <li>
                 <Link to="task">Tasks</Link>
               </li>
               <li>
                 <Link to="category">Categories</Link>
               </li>
-            </ul>
+            </ul> */}
           </li>
           <li>
             <Link to="user">Users</Link>

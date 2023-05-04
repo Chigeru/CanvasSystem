@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useParams } from "react-router-dom";
-import { getRequest, deleteRequest } from "../../../api/AxiosApi";
+import { getRequest } from "../../../api/AxiosApi";
 
 import PopoutPanel from "../../PopoutPanel.js";
 
 function TableLayout() {
   const [dataInformation, setDataInformation] = useState([]);
-  const [searchData, setSearchData] = useState([]);
+  // const [searchData, setSearchData] = useState([]);
 
   let { category } = useParams();
 
   useEffect(() => {
-    axiosGetData();
+    axiosGetData(category);
   }, [category]);
 
-  async function axiosGetData() {
+  async function axiosGetData(searchString) {
     try {
-      const fetchedData = await getRequest(category);
+      const fetchedData = await getRequest(searchString);
       setDataInformation(fetchedData.data);
     } catch (error) {
       console.log(error);
@@ -33,11 +33,11 @@ function TableLayout() {
     console.log(`Deleted: ${item._id}`);
   }
 
-  function ShowSearchedItem(item, key) {
-    if(searchData !== "") {}
-  }
+  // function ShowSearchedItem(item, key) {
+  //   if(searchData !== "") {}
+  // }
 
-  function displayTable() {
+  function displayTableInformation() {
     if (dataInformation.length > 0) {
       return (
         <div>
@@ -69,8 +69,8 @@ function TableLayout() {
   }
 
   return (
-    <section className="w-100">
-      {displayTable()}
+    <section className="w-100 data-overview">
+      {displayTableInformation()}
       <div className="mt-3">
         <button className="btn-add-another">
           <span>Add another</span>

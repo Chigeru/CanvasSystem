@@ -11,6 +11,7 @@ $light:       #ededed;
 $dark:        #121212;
 
 $fontcolor: gray;
+$fontcolor-invert: white;
 
 
 @mixin transition($duration: 0.45s) {

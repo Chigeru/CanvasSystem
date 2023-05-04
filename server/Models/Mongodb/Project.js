@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 const ProjectSchema = new Schema(
   {
     name: String,
+    description: String,
     tasks: [{ type: mongoose.Schema.ObjectId, ref: "Tasks", default: () => [] }],
     workflows: [{ type: mongoose.Schema.ObjectId, ref: "Workflows", default: () => [] }],
     labels: [{ type: mongoose.Schema.ObjectId, ref: "TaskLabels", default: () => [] }],

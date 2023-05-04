@@ -1,0 +1,38 @@
+
+.project-list-entity {
+  padding: 20px 10px;
+  border-radius: 25px;
+  border: 1px solid #dbdbdb;
+  background-color: rgba(200, 200, 200, 0.1);
+  // color: white;
+  margin: 10px 0;
+
+  &:hover {
+  background-color: rgba(170, 170, 170, 0.2);
+
+  }
+
+  
+  .section-top {
+    border-bottom: 1px solid rgba(150,150,150, 0.3);
+    .headline {
+      
+      &:first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+  .section-bottom {
+    ul {
+      padding: 0;
+      margin: 0;
+      li {
+        list-style: none;
+        
+      }
+    }
+  }
+}
+.container {
+  // background-color: #252525;
+}

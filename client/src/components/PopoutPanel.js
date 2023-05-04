@@ -12,6 +12,7 @@ function PopoutPanel({ passedItem, method }) {
 
 
   return (
+      
     <div className="popout-dark-area" onClick={() => handleClickOutside()}>
       <div className="popout-panel right">
         PopoutPanel
@@ -26,6 +27,7 @@ function PopoutPanel({ passedItem, method }) {
         </form>
       </div>
     </div>
+  
   );
 }
 

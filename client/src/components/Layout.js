@@ -1,6 +1,6 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import HeadNavigation from './layout/headNavigation'
+import HeadNavigation from './Front/layout/headNavigation'
 
 function Layout() {
   return (
@@ -9,7 +9,11 @@ function Layout() {
       
       <Outlet />
 
-      <footer></footer>
+      <footer>
+        <p>
+          Work in progress 
+        </p>
+      </footer>
     </div>
   )
 }

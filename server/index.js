@@ -4,7 +4,9 @@ import bodyparser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 
+
 import crudRoutes from "./routes/CRUDRoutes.js";
+// import sessionChecker from "./helper/SessionChecker.js";
 
 /* CONFIG */
 dotenv.config();
@@ -20,8 +22,32 @@ mongoose
   .connect(`${process.env.MONGO_URI}${process.env.DB_TEST}`)
   .catch((error) => console.log(`${error}. did not connect`));
 
+// const sessionMaxAge = 1*24*60*60*1000; // milliseconds to desired time -> days * hours * minutes * seconds * milliseconds
+// app.set("trust proxy", 1); // trust first proxy
+// app.use(
+//   session({
+//     name: `daffyduck`,
+//     secret: "some-secret-example",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       secure: false, // This will only work if you have https enabled!
+//       maxAge: sessionMaxAge, 
+//     },
+//   })
+// );
+
 /* Routes */
 app.use("/api", crudRoutes);
+
+
+// app.get('/', sessionChecker, async function(req, res, next) {
+//   res.redirect('/loggedin')
+// });
+// app.get('/loggedin', (req, res) => {
+//   res.send("this is loggedin page")
+// })
+
 
 app.listen(PORT, () =>
   console.log(

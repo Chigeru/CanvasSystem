@@ -8,7 +8,11 @@ import TaskDetailedOverview from "./pages/Front/TaskDetailedOverviewPage";
 
 import LoginPage from "./pages/LoginPage";
 
-import AdminLayout from "./pages/Admin/AdminLayout";
+import MyPage from "./pages/Front/StartPage";
+import SelectedProject from "./pages/Front/MyPage/ProjectOverview";
+// import MyPageProjectList from "./components/MyPage/ProjectList"
+
+import AdminLayout from "./components/Admin/AdminLayout";
 import AdminCreateStatus from "./pages/Admin/Create/AdminCreateStatus";
 import AdminFrontPage from "./pages/Admin/AdminFrontpagePage";
 import AdminCategoryOverviewPage from "./pages/Admin/Create/AdminCategoryOverviewPage";
@@ -26,6 +30,8 @@ function App() {
         <Route path="tasks" element={<TaskDisplayList />}>
           <Route path=":id" element={<TaskDetailedOverview />}></Route>
         </Route>
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/:selectedproject" element={<SelectedProject />} />
       </Route>
       <Route path="/login" element={<LoginPage />}/>
       <Route path="/admin" element={<AdminLayout />} onEnter={requireAuth}>

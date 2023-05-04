@@ -4,7 +4,7 @@ import DepartmentMongoose from '../Models/Mongodb/Department.js';
 export const getProject_list = async (req, res) => {
   try {
     
-    const projects = typeof req.body.department === 'undefined' ? await ProjectMongoose.find({}) :await DepartmentMongoose.findById(req.body.department).select('projects').populate('projects');
+    const projects = typeof req.body.department === 'undefined' ? await ProjectMongoose.find({}).populate('users', '-password -email -accesslevel') :await DepartmentMongoose.findById(req.body.department).select('projects').populate('projects').populate('users');
     
     res.status(200).json(projects);
   } catch (error) {

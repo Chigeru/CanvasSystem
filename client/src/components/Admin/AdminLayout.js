@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function AdminLayout({route}) {
   
@@ -20,7 +20,7 @@ function AdminLayout({route}) {
         <div className="container">
           <div className="row">
             <div className="col-8 d-flex align-items-center">
-              <nav>
+              <nav className="navigation">
                 <ul>
                   <li>
                     <Link to="test" className="link-categoryPageRef">Test</Link>
@@ -35,12 +35,19 @@ function AdminLayout({route}) {
               </nav>
             </div>
             <div className="col-4">
-              <h1>AdminLayout</h1>
+              <a href="/" className="linkref"><h1>AdminLayout</h1></a>
             </div>
           </div>
         </div>
       </header>
+
       <Outlet />
+      
+      <footer>
+        <p>
+          This Admin page is only for testing purpose  
+        </p>
+      </footer>
     </div>
   );
 }
