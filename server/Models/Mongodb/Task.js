@@ -7,6 +7,15 @@ const TaskSchema = new mongoose.Schema(
     workflow: { type: mongoose.Schema.ObjectId, ref: "Workflows"},
     labels: [{ type: mongoose.Schema.ObjectId, ref: "TaskLabels" }],
     users: [{ type: mongoose.Schema.ObjectId, ref: "Users" }],
+    weight: { 
+      type: Number,
+      default: 1,
+      required: true
+    },
+    highpriority: { 
+      type: Boolean,
+      default: false
+    },
     deadline: Date,
     startedAt: Date,
   },

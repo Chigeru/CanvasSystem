@@ -3,14 +3,11 @@ import { Route, Routes } from "react-router-dom";
 
 import Layout from "./components/Layout";
 import Home from "./pages/HomePage";
-import TaskDisplayList from "./pages/Front/TaskDisplayListPage";
-import TaskDetailedOverview from "./pages/Front/TaskDetailedOverviewPage";
 
 import LoginPage from "./pages/LoginPage";
 
 import MyPage from "./pages/Front/StartPage";
 import SelectedProject from "./pages/Front/MyPage/ProjectOverview";
-// import MyPageProjectList from "./components/MyPage/ProjectList"
 
 import AdminLayout from "./components/Admin/AdminLayout";
 import AdminCreateStatus from "./pages/Admin/Create/AdminCreateStatus";
@@ -27,9 +24,6 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />}></Route>
-        <Route path="tasks" element={<TaskDisplayList />}>
-          <Route path=":id" element={<TaskDetailedOverview />}></Route>
-        </Route>
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/:selectedproject" element={<SelectedProject />} />
       </Route>

@@ -12,6 +12,26 @@
     flex: 1;
   }
 }
+h1 {
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}
+h2 {
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}
+h3 {
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}
+h4 {
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}
 
 a {
   &.linkref {
@@ -38,6 +58,22 @@ header {
   img {
     height: 50px;
     margin-left: 1vw
+  }
+}
+
+form {
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+  }
+
+  textarea {
+    width: 80%;
+    min-height: 2rem;
+    height: 4rem;
+    white-space: pre-wrap;
+    resize: vertical;
   }
 }
 

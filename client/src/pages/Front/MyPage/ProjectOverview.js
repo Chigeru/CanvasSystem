@@ -22,53 +22,65 @@ function ProjectOverview() {
     }
   }
 
+  function Modaltestopen() {
+    const modal = document.querySelector("[data-modal]");
+    modal.showModal();
+  }
+
+  function ModaltestClose() {
+    const modal = document.querySelector("[data-modal]");
+    modal.close();
+  }
+
   function WorkflowContainer() {
-    
-      if(typeof(projectData.workflows) === "object" && projectData.workflows.length > 0) {
-        return (
-          <div className="sidescroller workflow-container">
-            <div>
-              <hr/>
-              {projectData.workflows.map((workflow, key) => {
-                return (
-                  <div key={key}>
-                    <h4>{workflow.name}</h4>
-                  </div>
-                );
-              })}
-            </div>
+    if (
+      typeof projectData.workflows === "object" &&
+      projectData.workflows.length > 0
+    ) {
+      return (
+        <div className="sidescroller workflow-container">
+          <div>
+            <hr />
+            {projectData.workflows.map((workflow, key) => {
+              return (
+                <div key={key}>
+                  <h4>{workflow.name}</h4>
+                </div>
+              );
+            })}
           </div>
-        );
-      }
-      else {
-        return (
-          <div className="workflow-container">
-            We couldn't get your work, please try again
-          </div>
-        );
-      }
-    
-    
+        </div>
+      );
+    } else {
+      return (
+        <div className="workflow-container">
+          We couldn't get your work, please try again
+        </div>
+      );
+    }
   }
 
   return (
     <div>
-      ProjectOverview
+      <div data-overlay className="overlay"></div>
       <div>
         <h2>
-          <strong>{projectData.name}</strong>
+          <strong>{projectData.name}</strong> {"deadline" in projectData ? ` - ${new Date(projectData.deadline).toLocaleDateString()}` : null} 
         </h2>
       </div>
-      <div>
+      <div className="project-expand-description-area">
         <p>
+          {projectData.description} <br/>
           <strong>Created: </strong>{" "}
           {new Date(projectData.createdAt).toLocaleDateString()} -{" "}
           <strong>Updated: </strong>{" "}
           {new Date(projectData.updatedAt).toLocaleDateString()}
         </p>
-        <p>
-          <strong>Project description:</strong> {projectData.description}
-        </p>
+        <dialog data-modal>
+          idk if this works
+          <button data-close-modal onClick={ModaltestClose}>close</button>
+        </dialog>
+        <button data-open-modal onClick={Modaltestopen}>hello</button>
         {WorkflowContainer()}
       </div>
     </div>

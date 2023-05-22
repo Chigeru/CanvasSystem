@@ -1,10 +1,8 @@
 import ProjectMongoose from '../Models/Mongodb/Project.js';
-import DepartmentMongoose from '../Models/Mongodb/Department.js';
 
 export const getProject_list = async (req, res) => {
   try {
-    
-    const projects = typeof req.body.department === 'undefined' ? await ProjectMongoose.find({}).populate('users', '-password -email -accesslevel') :await DepartmentMongoose.findById(req.body.department).select('projects').populate('projects').populate('users');
+    const projects = await ProjectMongoose.find({}).populate('users', '-password -email -accesslevel');
     
     res.status(200).json(projects);
   } catch (error) {
@@ -15,7 +13,7 @@ export const getProject_list = async (req, res) => {
 export const getProject_details = async (req, res) => {
   try {
     const { projectid }  = req.params;
-    const project = await ProjectMongoose.findOne({_id: projectid}).populate("tasks workflows");
+    const project = await ProjectMongoose.findOne({_id: projectid}).populate("workflows").populate("tasks");
     
     res.status(200).json(project);
   } catch (error) {
@@ -29,6 +27,7 @@ export const postProject = async (req, res) => {
   try {
     const data = new ProjectMongoose({
       name : req.body.name,
+      description : req.body.description,
       users : req.body.users,
       deadline : req.body.deadline,
       startedAt : req.body.startedAt

@@ -3,7 +3,7 @@
   padding: 20px 10px;
   border-radius: 25px;
   border: 1px solid #dbdbdb;
-  background-color: rgba(200, 200, 200, 0.1);
+  background-color: rgba(230, 230, 230, 0.1);
   // color: white;
   margin: 10px 0;
 
@@ -16,7 +16,6 @@
   .section-top {
     border-bottom: 1px solid rgba(150,150,150, 0.3);
     .headline {
-      
       &:first-letter {
         text-transform: uppercase;
       }
