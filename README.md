@@ -1,4 +1,4 @@
-<div style="text-align: center"> 
+<div align="center"> 
   <img src="https://www.aarhustech.dk/media/adobbtpk/udklip.png" height="100px"/>
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/AARHUS_TECH_logo.svg/740px-AARHUS_TECH_logo.svg.png" height="80px"/>
 </div>
