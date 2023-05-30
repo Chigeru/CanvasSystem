@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { getRequest } from "../../api/AxiosApi";
+import { getRequest } from "../../lib/AxiosApi";
 import CreateProject from "./Create/CreateProject.js";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
@@ -8,13 +8,13 @@ function ProjectList() {
   const [projectData, setProjectData] = useState([]);
 
   useEffect(() => {
-    axiosGetData("project", setProjectData);
+    AxiosGetData(`project/extended`, setProjectData);
   }, []);
 
-  async function axiosGetData(searchString, setUseState) {
+  async function AxiosGetData(searchString, setVariableValue) {
     try {
       const fetchedData = await getRequest(searchString);
-      setUseState(fetchedData.data);
+      setVariableValue(fetchedData.data);
     } catch (error) {
       console.log(error);
     }
@@ -34,31 +34,24 @@ function ProjectList() {
     );
   }
 
-  function CalcTaskProgression() {
-    let progress = 7;
-    let helpNeeded = 2;
-    let total = 20;
-    let projectWorkflowsClosed = [];
-    if(typeof(projectData.workflow) !== 'undefined') {
-      projectData.workflow.foreach((workflow) => {
-        if(workflow.type === 'closed') projectWorkflowsClosed.push(workflow);
-        else if(workflow.type === 'help') projectWorkflowsClosed.push(workflow);
+  function CalcTaskProgression(projectCurrent) {
+    let progress = 0;
+    let helpNeeded = 0;
+    let total = 0;
+
+    if(typeof(projectCurrent.workflows) !== 'undefined') {
+      projectCurrent.workflows.map((workflow) => {
+        workflow.tasks.map((task) => {
+          if(workflow.type === 'closed') progress += task.weight;
+          if(workflow.type === 'help') helpNeeded += task.weight;
+          return total += task.weight;
+        })
+        return true;
       })
     }
-    
-    // projectData.tasks.foreach((task) => {
-    //   total += task.weight;
-    //   projectWorkflowsClosed.some((workflowClosed) => {
-    //     if(task.workflow === workflowClosed._id) {
-    //           progress += task.weight;
-    //           return true;
-    //     }
-    //     return false;
-    //   })
-    // })
 
-    let calcProcent = (progress/total)*100;
-    let calcHelpProcent = (helpNeeded/total)*100;
+    let calcProcent = (progress === 0 || total === 0) ? 0 : (progress/total)*100;
+    let calcHelpProcent = (helpNeeded === 0 || total === 0) ? 0 : (helpNeeded/total)*100;
     return (
       <div>
         <ProgressBar>
@@ -71,8 +64,7 @@ function ProjectList() {
 
   return (
     <div className="container">
-
-      ProjectList
+      <br/>
       <section>
         <button className="btn btn-primary" data-toggle="modal" data-target="#reg-modal">Create Project</button>  
       </section>    
@@ -81,7 +73,6 @@ function ProjectList() {
 
       <div className="row">
         {projectData.map((project, key) => {
-          console.log(project);
           return (
             <div className="col-lg-4 col-md-6 col-12" key={key}>
               <Link to={project._id} className="linkref">
@@ -96,7 +87,7 @@ function ProjectList() {
                         {DisplayUsers(project)}
                       </li>
                       <li>
-                      {CalcTaskProgression()}
+                      {CalcTaskProgression(project)}
                       </li>
                     </ul>
                   </div>

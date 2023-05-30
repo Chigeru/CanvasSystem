@@ -26,7 +26,7 @@ axiosClient.defaults.timeout = 2000;
 
 
 export function getRequest(URL) {
-  return axiosClient.get(`/${URL}`).then(response => response).then(data => data);
+  return axiosClient.get(`/${URL}`).then(response => response);
 }
 
 /**
@@ -49,3 +49,4 @@ export function patchRequest(URL, payload) {
 export function deleteRequest(URL) {
   return axiosClient.delete(`/${URL}`);
 }
+

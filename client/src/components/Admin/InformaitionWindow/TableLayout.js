@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useParams } from "react-router-dom";
-import { getRequest } from "../../../api/AxiosApi";
+import { getRequest } from "../../../lib/AxiosApi";
 
 import PopoutPanel from "../../PopoutPanel.js";
 

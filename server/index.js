@@ -6,6 +6,7 @@ import cors from "cors";
 
 
 import crudRoutes from "./routes/CRUDRoutes.js";
+import formRoutes from "./routes/CRUDFormsRoute.js";
 // import sessionChecker from "./helper/SessionChecker.js";
 
 /* CONFIG */
@@ -39,6 +40,7 @@ mongoose
 
 /* Routes */
 app.use("/api", crudRoutes);
+app.use("/form", formRoutes);
 
 
 // app.get('/', sessionChecker, async function(req, res, next) {

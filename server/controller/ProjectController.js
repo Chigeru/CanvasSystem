@@ -13,9 +13,18 @@ export const getProject_list = async (req, res) => {
 export const getProject_details = async (req, res) => {
   try {
     const { projectid }  = req.params;
-    const project = await ProjectMongoose.findOne({_id: projectid}).populate("workflows").populate("tasks");
+    const project = await ProjectMongoose.findById(projectid).populate("workflows");
     
     res.status(200).json(project);
+  } catch (error) {
+    res.status(404).json({message: error});
+  }
+}
+
+export const getProjectAll_list = async (req, res) => {
+  try {
+    const projects = await ProjectMongoose.find({}).populate([{path: "workflows", populate: {path: "tasks"}}, {path: "users", exclude: "email"}, {path: "labels"}]);
+    res.status(200).json(projects);
   } catch (error) {
     res.status(404).json({message: error});
   }

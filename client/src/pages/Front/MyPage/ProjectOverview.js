@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getRequest } from "../../../api/AxiosApi.js";
+import { getRequest } from "../../../lib/AxiosApi.js";
 
 function ProjectOverview() {
   const [projectData, setProjectData] = useState([]);
+  const [workflowsData, setWorkflowsData] = useState([]);
   let { selectedproject } = useParams();
 
   useEffect(() => {
     console.log(selectedproject);
     if (typeof selectedproject === "string") {
-      AxiosGetData("project/" + selectedproject);
+      AxiosGetProjectData(`project/${selectedproject}`, setProjectData);
+      AxiosGetProjectData(`project/${selectedproject}/workflow`, setWorkflowsData);
     }
   }, [selectedproject]);
 
-  async function AxiosGetData(searchString) {
+  async function AxiosGetProjectData(searchString, setVariableValue) {
     try {
       const fetchedData = await getRequest(searchString);
-      setProjectData(fetchedData.data);
+      setVariableValue(fetchedData.data);
     } catch (error) {
       console.log(error);
     }
@@ -39,12 +41,31 @@ function ProjectOverview() {
     ) {
       return (
         <div className="sidescroller workflow-container">
-          <div>
+          <div className="d-flex flex-row">
             <hr />
-            {projectData.workflows.map((workflow, key) => {
+            {workflowsData.map((workflow, key) => {
               return (
-                <div key={key}>
-                  <h4>{workflow.name}</h4>
+                <div key={key} className="workflow-column">
+                  <div className="workflow-head">
+                    <div className="workflow-headline">
+                      <div className="workflow-headline-text">{workflow.name}</div>
+                      <span className="task-counter">{workflow.tasks.length}</span>
+                    </div>
+                    <div className="workflow-controls">
+                      <img src="/images/three_dots.png" alt=""/>
+                      <img src="/images/plus_rounded.png" alt=""/>
+                      <input type="checkbox" />
+                    </div>
+                  </div>
+                  <div className="workflow-body">
+                    {workflow.tasks.map((task, key) => {
+                      return (
+                        <div key={key} className="workflow-task" style={{borderLeftColor: "#ff5010"}}>
+                          <p>{task.title}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               );
             })}
@@ -54,7 +75,7 @@ function ProjectOverview() {
     } else {
       return (
         <div className="workflow-container">
-          We couldn't get your work, please try again
+          We couldn't get your planning, please try again
         </div>
       );
     }
@@ -65,12 +86,15 @@ function ProjectOverview() {
       <div data-overlay className="overlay"></div>
       <div>
         <h2>
-          <strong>{projectData.name}</strong> {"deadline" in projectData ? ` - ${new Date(projectData.deadline).toLocaleDateString()}` : null} 
+          <strong>{projectData.name}</strong>{" "}
+          {"deadline" in projectData
+            ? ` - ${new Date(projectData.deadline).toLocaleDateString()}`
+            : null}
         </h2>
       </div>
       <div className="project-expand-description-area">
         <p>
-          {projectData.description} <br/>
+          {projectData.description} <br />
           <strong>Created: </strong>{" "}
           {new Date(projectData.createdAt).toLocaleDateString()} -{" "}
           <strong>Updated: </strong>{" "}
@@ -78,11 +102,15 @@ function ProjectOverview() {
         </p>
         <dialog data-modal>
           idk if this works
-          <button data-close-modal onClick={ModaltestClose}>close</button>
+          <button data-close-modal onClick={ModaltestClose}>
+            close
+          </button>
         </dialog>
-        <button data-open-modal onClick={Modaltestopen}>hello</button>
-        {WorkflowContainer()}
+        <button data-open-modal onClick={Modaltestopen}>
+          hello
+        </button>
       </div>
+      {WorkflowContainer()}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import TaskLabelMongoose from "../Models/Mongodb/TaskLabel.js";
 export const getTaskLabel_list = async (req, res) => {
   try {
     const { projectid } = req.params;
-    const project = await ProjectMongoose.findById(projectid).select("labels");
+    const project = await ProjectMongoose.findById(projectid).select("labels").populate("labels");
     res.status(200).json(project.labels);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -13,8 +13,8 @@ export const getTaskLabel_list = async (req, res) => {
 
 export const getTaskLabel_details = async (req, res) => {
   try {
-    const { projectid, labelid } = req.params;
-    const project = await ProjectMongoose.findById(projectid);
+    const { labelid } = req.params;
+    const project = await TaskLabelMongoose.findById(labelid);
     
     let labelData = {};
     project.labels.forEach(label => {
@@ -38,7 +38,7 @@ export const postTaskLabel = async (req, res) => {
     })
 
     const dataToSave = await data.save();
-    await ProjectMongoose.findOneAndUpdate({ _id: projectid, $push: { labels: dataToSave } });
+    await ProjectMongoose.updateOne({ _id: projectid}, {$push: { labels: dataToSave } });
 
     res.status(200).json(dataToSave);
   } catch (error) {

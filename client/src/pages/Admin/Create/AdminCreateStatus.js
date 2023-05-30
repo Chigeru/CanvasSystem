@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postRequest } from "../../../api/AxiosApi.js";
+import { postRequest } from "../../../lib/AxiosApi.js";
 
 function AdminCreateStatus() {
   const [statusName, setStatusName] = useState("");

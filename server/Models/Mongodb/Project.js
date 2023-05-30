@@ -10,6 +10,14 @@ const ProjectSchema = new Schema(
     workflows: [{ type: mongoose.Schema.ObjectId, ref: "Workflows", default: () => [] }],
     labels: [{ type: mongoose.Schema.ObjectId, ref: "TaskLabels", default: () => [] }],
     users: [{ type: mongoose.Schema.ObjectId, ref: "Users", default: () => [] }],
+    active: {
+      type: Boolean,
+      default: false
+    },
+    done: {
+      type: Boolean,
+      default: false
+    },
     deadline: Date,
     startedAt: Date,
   },

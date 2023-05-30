@@ -4,7 +4,6 @@ const TaskSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: String,
-    workflow: { type: mongoose.Schema.ObjectId, ref: "Workflows"},
     labels: [{ type: mongoose.Schema.ObjectId, ref: "TaskLabels" }],
     users: [{ type: mongoose.Schema.ObjectId, ref: "Users" }],
     weight: { 
