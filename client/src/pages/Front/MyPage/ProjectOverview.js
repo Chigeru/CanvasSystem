@@ -4,14 +4,11 @@ import { getRequest } from "../../../lib/AxiosApi.js";
 
 function ProjectOverview() {
   const [projectData, setProjectData] = useState([]);
-  const [workflowsData, setWorkflowsData] = useState([]);
   let { selectedproject } = useParams();
 
   useEffect(() => {
-    console.log(selectedproject);
     if (typeof selectedproject === "string") {
       AxiosGetProjectData(`project/${selectedproject}`, setProjectData);
-      AxiosGetProjectData(`project/${selectedproject}/workflow`, setWorkflowsData);
     }
   }, [selectedproject]);
 
@@ -40,10 +37,9 @@ function ProjectOverview() {
       projectData.workflows.length > 0
     ) {
       return (
-        <div className="sidescroller workflow-container">
-          <div className="d-flex flex-row">
-            <hr />
-            {workflowsData.map((workflow, key) => {
+        <div className="workflow-container">
+          {/* <div className="d-flex flex-row"> */}
+            {projectData.workflows.map((workflow, key) => {
               return (
                 <div key={key} className="workflow-column">
                   <div className="workflow-head">
@@ -69,7 +65,7 @@ function ProjectOverview() {
                 </div>
               );
             })}
-          </div>
+          {/* </div> */}
         </div>
       );
     } else {

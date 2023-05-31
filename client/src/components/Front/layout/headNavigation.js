@@ -5,7 +5,7 @@ function headNavigation() {
   return (
     <header className="header">
       <Link to="" className="link-categoryPageRef">
-        <img src="images/aarhusTechLogo.png" alt="" />
+        <img src="/images/aarhusTechLogo.png" alt="" />
       </Link>
 
       <nav className="navigation">

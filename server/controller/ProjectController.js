@@ -2,7 +2,7 @@ import ProjectMongoose from '../Models/Mongodb/Project.js';
 
 export const getProject_list = async (req, res) => {
   try {
-    const projects = await ProjectMongoose.find({}).populate('users', '-password -email -accesslevel');
+    const projects = await ProjectMongoose.find({});
     
     res.status(200).json(projects);
   } catch (error) {
@@ -23,7 +23,17 @@ export const getProject_details = async (req, res) => {
 
 export const getProjectAll_list = async (req, res) => {
   try {
-    const projects = await ProjectMongoose.find({}).populate([{path: "workflows", populate: {path: "tasks"}}, {path: "users", exclude: "email"}, {path: "labels"}]);
+    const projects = await ProjectMongoose.find({}).populate([{path: "workflows", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
+    res.status(200).json(projects);
+  } catch (error) {
+    res.status(404).json({message: error});
+  }
+}
+
+export const getProjectAll_details = async (req, res) => {
+  try {
+    const { projectid }  = req.params;
+    const projects = await ProjectMongoose.findById(projectid).populate([{path: "workflows", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
     res.status(200).json(projects);
   } catch (error) {
     res.status(404).json({message: error});
