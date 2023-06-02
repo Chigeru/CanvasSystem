@@ -1,9 +1,6 @@
 import React from "react";
 
-function CreateProject() {
-
-
-
+function CreateProject({departmentsData}) {
 
   return (
     <div className="modal fade" id="reg-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
@@ -22,6 +19,14 @@ function CreateProject() {
               </div>
               
               {/* <input /> department */}
+              <div>
+                <label>Department</label>
+                <select name="department">
+                  {departmentsData.map(department => {
+                    return <option value={department._id}>{department._name}</option>
+                  })}
+                </select>
+              </div>
               {/* <input /> users */}
               {/* <input /> workflows */}
               {/* <input /> labels */}

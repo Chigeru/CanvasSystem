@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getProject_list, getProject_details, getProjectAll_list, getProjectAll_details, postProject, updateProject, deleteProject } from '../../controller/ProjectController.js'
+import { getProject_list, getProjectAll_list, getProjectAll_details, postProject, updateProject, deleteProject } from '../../controller/ProjectController.js'
 import WorkflowRoutes from './WorkflowRoute.js';
 import TaskLabelRoutes from './TaskLabelRoute.js';
 

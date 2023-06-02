@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getRequest } from "../../../lib/AxiosApi.js";
 
 function ProjectOverview() {
-  const [projectData, setProjectData] = useState([]);
+  const [projectData, setProjectData] = useState({});
   let { selectedproject } = useParams();
 
   useEffect(() => {
@@ -38,34 +38,36 @@ function ProjectOverview() {
     ) {
       return (
         <div className="workflow-container">
-          {/* <div className="d-flex flex-row"> */}
-            {projectData.workflows.map((workflow, key) => {
-              return (
-                <div key={key} className="workflow-column">
-                  <div className="workflow-head">
-                    <div className="workflow-headline">
-                      <div className="workflow-headline-text">{workflow.name}</div>
-                      <span className="task-counter">{workflow.tasks.length}</span>
+          {projectData.workflows.map((workflow, key) => {
+            return (
+              <div key={key} className="workflow-column">
+                <div className="workflow-head">
+                  <div className="workflow-headline">
+                    <div className="workflow-headline-text">
+                      {workflow.name}
                     </div>
-                    <div className="workflow-controls">
-                      <img src="/images/three_dots.png" alt=""/>
-                      <img src="/images/plus_rounded.png" alt=""/>
-                      <input type="checkbox" />
-                    </div>
+                    <span className="task-counter">
+                      {workflow.tasks.length}
+                    </span>
                   </div>
-                  <div className="workflow-body">
-                    {workflow.tasks.map((task, key) => {
-                      return (
-                        <div key={key} className="workflow-task" style={{borderLeftColor: "#ff5010"}}>
-                          <p>{task.title}</p>
-                        </div>
-                      );
-                    })}
+                  <div className="workflow-controls">
+                    <img src="/images/three_dots.png" alt="" />
+                    <img src="/images/plus_rounded.png" alt="" />
+                    <input type="checkbox" />
                   </div>
                 </div>
-              );
-            })}
-          {/* </div> */}
+                <div className="workflow-body">
+                  {workflow.tasks.map((task, key) => {
+                    return (
+                      <div key={key} className="workflow-task" style={{ borderLeftColor: "#ff5010" }}>
+                        <p>{task.title}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       );
     } else {
@@ -81,11 +83,10 @@ function ProjectOverview() {
     <div>
       <div data-overlay className="overlay"></div>
       <div>
+        {console.log(projectData)}
         <h2>
           <strong>{projectData.name}</strong>{" "}
-          {"deadline" in projectData
-            ? ` - ${new Date(projectData.deadline).toLocaleDateString()}`
-            : null}
+          {"deadline" in projectData ? ` - ${new Date(projectData.deadline).toLocaleDateString()}` : null}
         </h2>
       </div>
       <div className="project-expand-description-area">

@@ -1,24 +1,8 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { getRequest } from "../../lib/AxiosApi";
-import CreateProject from "./Create/CreateProject.js";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
-function ProjectList() {
-  const [projectData, setProjectData] = useState([]);
-
-  useEffect(() => {
-    AxiosGetData(`project/extended`, setProjectData);
-  }, []);
-
-  async function AxiosGetData(searchString, setVariableValue) {
-    try {
-      const fetchedData = await getRequest(searchString);
-      setVariableValue(fetchedData.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+function ProjectListOverview({projectData}) {
 
   function DisplayUsers(project) {
     return (
@@ -50,8 +34,8 @@ function ProjectList() {
       })
     }
 
-    let calcProcent = (progress === 0 || total === 0) ? 0 : (progress/total)*100;
-    let calcHelpProcent = (helpNeeded === 0 || total === 0) ? 0 : (helpNeeded/total)*100;
+    let calcProcent = (progress === 0 || total === 0) ? 0 : Math.floor((progress/total)*100);
+    let calcHelpProcent = (helpNeeded === 0 || total === 0) ? 0 : Math.floor((helpNeeded/total)*100);
     return (
       <div>
         <ProgressBar>
@@ -64,13 +48,6 @@ function ProjectList() {
 
   return (
     <div className="container">
-      <br/>
-      <section>
-        <button className="btn btn-primary" data-toggle="modal" data-target="#reg-modal">Create Project</button>  
-      </section>    
-
-      <CreateProject />
-
       <div className="row">
         {projectData.map((project, key) => {
           return (
@@ -101,4 +78,4 @@ function ProjectList() {
   );
 }
 
-export default ProjectList;
+export default ProjectListOverview;

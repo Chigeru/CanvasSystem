@@ -1,10 +1,10 @@
 import express from 'express';
 
-import { getAllDataForProjectCreation } from '../controller/FormDataController.js';
+import { CreateProductWithExtendedData } from '../controller/FormDataController.js';
 
 
 const router = express.Router();
 
-router.get('/projectcreation', getAllDataForProjectCreation);
+router.get('/projectcreation', CreateProductWithExtendedData);
 
 export default router;
