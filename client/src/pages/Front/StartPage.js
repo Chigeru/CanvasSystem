@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import ProjectListOverview from "../../components/MyPage/ProjectListOverview";
 import { getRequest } from "../../lib/AxiosApi";
-import CreateProject from "../../components/MyPage/Create/CreateProject.js";
+
+import ProjectListOverview from "../../components/MyPage/ProjectListOverview";
+
+import ModalBase from "../../components/Modal/ModalBase.js";
+import FormCreateProject from "../../components/Modal/ModalContent/FormCreateProject";
 
 // import ProjectListDeparmentOverview from '../../components/MyPage/ProjectListDeparmentOverview.js'
 
@@ -25,12 +28,11 @@ function StartPage() {
     <div>
       <br />
       <div className="container">
-        <button className="btn btn-primary" data-toggle="modal" data-target="#reg-modal">
-          Create Project
-        </button>
+        <ModalBase modalTitle="Create Project">
+          <FormCreateProject departmentsData={departmentData} />
+        </ModalBase>
       </div>
-
-      <CreateProject departmentsData={departmentData} />
+      
       {departmentData.length > 0 ? (
         <ProjectListOverview projectData={departmentData[0].projects} />
       ) : (

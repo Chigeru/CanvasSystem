@@ -5,6 +5,6 @@ import { CreateProductWithExtendedData } from '../controller/FormDataController.
 
 const router = express.Router();
 
-router.get('/projectcreation', CreateProductWithExtendedData);
+router.get('/form/projectcreation', CreateProductWithExtendedData);
 
 export default router;

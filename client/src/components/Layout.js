@@ -9,7 +9,6 @@ function Layout() {
 
       <Outlet />
       
-
       <footer>
         <p>
           Work in progress 

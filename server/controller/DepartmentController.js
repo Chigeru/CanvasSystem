@@ -24,7 +24,6 @@ export const getDepartment_details = async (req, res) => {
 export const getDepartmentExpanded_list = async (req, res) => {
   try {
     const department = await DepartmentMongoose.find({}).populate([{path: "users", select: "-email -password", populate: {path: "accesslevel", select: "group"}},{path: "projects", populate: [{path: "workflows", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]}])
-    
     res.status(200).json(department);
   } catch (error) {
     res.status(404).json({message: error});

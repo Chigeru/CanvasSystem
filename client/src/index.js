@@ -8,6 +8,8 @@ import "./styles/mysitestyling.scss";
 import "./styles/controlsite.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import "easymde/dist/easymde.min.css";
+
 import { createRoot } from "react-dom/client";
 const root = createRoot(document.getElementById("root"));
 root.render(

@@ -1,19 +1,23 @@
 import ProjectMongoose from '../Models/Mongodb/Project.js';
 import DepartmentMongoose from '../Models/Mongodb/Department.js';
+import WorkflowMongoose from '../Models/Mongodb/Workflow.js';
+import AddWorkflowTemplateToProject from '../helper/WorkflowTemplating.js';
 
 import mongoose from 'mongoose';
 
 export const CreateProductWithExtendedData = async (req, res) => {
+
+  var workflows = []
   try {
+    
+    if(typeof(req.body.workflows) === "string") {
+      workflows = await AddWorkflowTemplateToProject(req.body.workflows);
+    }
 
-    const labelData = req.body.labels.map(label => {return CreateLabel(label);});
-    const workflowsData = req.body.workflows.map(workflow => {return CreateWorkflow(workflow)});
-    const projectData = CreateProduct(req.body, workflowsData, labelData);
+    const projectData = await CreateProduct(req.body, (await workflows));
+    await DepartmentMongoose.findByIdAndUpdate(req.body.department, {$push: {projects: (await projectData).toString()}});
 
-    await DepartmentMongoose.updateOne({_id: req.body.departmentId}, {$push: {projects: projectData}});
-
-
-    res.status(200);
+    res.status(200).json({message: "Testing"});
   } catch (error) {
     res.status(404).json({ message: error });
   }
@@ -28,6 +32,14 @@ export const CreateUserAndAttatchToDepartment = async (req, res) => {
   }
 };
 
+
+function ObjectIdConverter(str) {
+  return mongoose.Types.ObjectId(str);
+}
+
+function ObjectIdConverterArray(arr) {
+  return arr.map(element => ObjectIdConverter(element));
+}
 
 async function CreateLabel(reqbody) {
   const data = new TaskLabelMongoose({
@@ -51,20 +63,21 @@ async function CreateWorkflow(reqbody) {
   return data._id;
 }
 
-async function CreateProduct(reqbody, workflows = [], labels = []) {
+async function CreateProduct(reqbody, createdWorkflows) {
+
+  const usersData = ObjectIdConverterArray(reqbody.users);
+
   const data = new ProjectMongoose({
     _id: new mongoose.Types.ObjectId(),
     name : reqbody.name,
+    users: usersData,
     description : reqbody.description,
-    users : reqbody.users,
-    workflows : workflows,
-    labels: labels,
+    workflows : createdWorkflows,
     active: reqbody.active,
-    done: reqbody.done,
-    deadline : reqbody.deadline,
-    startedAt : reqbody.startedAt
+    done: false
   });
 
   await data.save();
+  console.log("Project workflow: ", data.workflows);
   return data._id;
 }

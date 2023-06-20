@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import TaskSchema from "./Task.js";
 
+export const workflowTypes = ['ready', 'open', 'waiting', "help", 'closed'];
 
 const WorkflowSchema = new mongoose.Schema(
   {
-    _id: String,
     name: {
       type: String,
       required: true

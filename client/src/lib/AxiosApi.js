@@ -36,17 +36,21 @@ export function postRequest(URL, payload) {
   console.log(payload);
   let payloadJson = JSON.stringify(payload);
   console.log(payloadJson);
-  return axiosClient.post(`/${URL}`, payloadJson);
+  return axiosClient.post(`${URL}`, payloadJson);
 }
 
+export function postObject(URL, payload) {
+  let payloadJson = JSON.stringify(payload, null, 2);
+  return axiosClient.post(`${URL}`, payloadJson);
+}
 /**
  * Accepts only json as a payload
  */
 export function patchRequest(URL, payload) {
-  return axiosClient.patch(`/${URL}`, payload);
+  return axiosClient.patch(`${URL}`, payload);
 }
 
 export function deleteRequest(URL) {
-  return axiosClient.delete(`/${URL}`);
+  return axiosClient.delete(`${URL}`);
 }
 

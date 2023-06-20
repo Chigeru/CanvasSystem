@@ -40,7 +40,6 @@ mongoose
 
 /* Routes */
 app.use("/api", crudRoutes);
-app.use("/form", formRoutes);
 
 
 // app.get('/', sessionChecker, async function(req, res, next) {

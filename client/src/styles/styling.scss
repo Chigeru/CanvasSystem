@@ -64,18 +64,56 @@ header {
 form {
   & > div {
     display: flex;
-    justify-content: space-between;
-    margin: 5px 0;
+    flex-direction: column;
   }
 
-  textarea {
-    width: 80%;
-    min-height: 2rem;
-    height: 4rem;
-    white-space: pre-wrap;
-    resize: vertical;
+  .side-by-side-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    
+    @media (min-width: 992px) {
+      flex-direction: row;
+      gap: 2rem;
+    }
+
+    & > div {
+      flex: 1 1 50%;
+
+      & > div{
+        display: flex;
+        flex-direction: column;
+        margin: 1rem 0;
+
+        &:first-child {
+          margin: 0 0 1rem 0;
+        }
+      }
+    }
+  }
+
+  .CodeMirror:not(.CodeMirror-fullscreen) {
+    .CodeMirror-scroll {
+      height: 300px;
+      overflow-y: auto;
+      }
+  }  
+  input {
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding: 5px 9px;
+  }
+  input:focus {
+    border: 1px solid #007bff;
+    outline: 1px solid #007bff;
+  }
+  select {
+    option {
+      text-transform: capitalize;
+    }
   }
 }
+
 
 .popout-dark-area {
   position: fixed;

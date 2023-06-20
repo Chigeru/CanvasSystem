@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import WorkflowSchema from "./Workflow.js";
+import TaskLabel from "./TaskLabel.js";
+import Department from "./Department.js";
 
 const Schema = mongoose.Schema;
 
@@ -28,6 +30,8 @@ ProjectSchema.pre(/(delete)\i/, async function (next) {
   try {
     const project = await this.model.findOne(this.getFilter());
     await WorkflowSchema.deleteMany({ _id: { $in: project.workflow } });
+    await TaskLabel.deleteMany({ _id: { $in: project.labels}})
+    // await Department.updateOne({projects: project._id}, {$pull: {_id: project._id}})
     next();
   } catch (err) {
     next(err);
