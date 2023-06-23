@@ -1,10 +1,14 @@
 import express from 'express';
 
-import { CreateProductWithExtendedData } from '../controller/FormDataController.js';
+import { CreateProductWithExtendedData, CreateTask } from '../controller/FormDataController.js';
 
 
 const router = express.Router();
 
-router.get('/form/projectcreation', CreateProductWithExtendedData);
+router.post('/form/projectcreation', CreateProductWithExtendedData);
+router.post('/form/taskcreation', CreateTask);
 
 export default router;
+
+
+/* syke.. not here, the princess is in an other file */ 

@@ -13,7 +13,7 @@ export const getProject_list = async (req, res) => {
 export const getProject_details = async (req, res) => {
   try {
     const { projectid }  = req.params;
-    const project = await ProjectMongoose.findById(projectid).populate("workflows");
+    const project = await ProjectMongoose.findById(projectid).populate("workstates");
     
     res.status(200).json(project);
   } catch (error) {
@@ -23,7 +23,7 @@ export const getProject_details = async (req, res) => {
 
 export const getProjectAll_list = async (req, res) => {
   try {
-    const projects = await ProjectMongoose.find({}).populate([{path: "workflows", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
+    const projects = await ProjectMongoose.find({}).populate([{path: "workstates", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
     res.status(200).json(projects);
   } catch (error) {
     res.status(404).json({message: error});
@@ -33,7 +33,7 @@ export const getProjectAll_list = async (req, res) => {
 export const getProjectAll_details = async (req, res) => {
   try {
     const { projectid }  = req.params;
-    const projects = await ProjectMongoose.findById(projectid).populate([{path: "workflows", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
+    const projects = await ProjectMongoose.findById(projectid).populate([{path: "workstates", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
     res.status(200).json(projects);
   } catch (error) {
     res.status(404).json({message: error});

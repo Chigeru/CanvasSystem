@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+import Modal from "react-bootstrap/Modal";
 import { useParams } from "react-router-dom";
 import { getRequest } from "../../../lib/AxiosApi.js";
 
+import FormCreateTask from "../../../components/Modal/ModalContent/FormCreateTask.js";
+
+
 function ProjectOverview() {
   const [projectData, setProjectData] = useState({});
+  const [showModal, setShowModal] = useState(false);
   let { selectedproject } = useParams();
 
   useEffect(() => {
@@ -21,45 +26,48 @@ function ProjectOverview() {
     }
   }
 
-  function Modaltestopen() {
-    const modal = document.querySelector("[data-modal]");
-    modal.showModal();
+  console.log(projectData);
+
+
+    
+  function HandleOpen() {
+    setShowModal(true);
+  }
+  function HandleClose() {
+    setShowModal(false);
   }
 
-  function ModaltestClose() {
-    const modal = document.querySelector("[data-modal]");
-    modal.close();
-  }
-
-  function WorkflowContainer() {
+  function WorkstateContainer() {
     if (
-      typeof projectData.workflows === "object" &&
-      projectData.workflows.length > 0
+      typeof projectData.workstates === "object" &&
+      projectData.workstates.length > 0
     ) {
       return (
-        <div className="workflow-container">
-          {projectData.workflows.map((workflow, key) => {
+        <div className="workstate-container">
+          {projectData.workstates.map((workstate, key) => {
             return (
-              <div key={key} className="workflow-column">
-                <div className="workflow-head">
-                  <div className="workflow-headline">
-                    <div className="workflow-headline-text">
-                      {workflow.name}
+              <div key={key} className="workstate-column">
+                <div className="workstate-head">
+                  <div className="workstate-headline">
+                    <div className="workstate-headline-text">
+                      {workstate.name}
                     </div>
                     <span className="task-counter">
-                      {workflow.tasks.length}
+                      {workstate.tasks.length}
                     </span>
                   </div>
-                  <div className="workflow-controls">
+                  <div className="workstate-controls">
                     <img src="/images/three_dots.png" alt="" />
-                    <img src="/images/plus_rounded.png" alt="" />
+                    <button className="image-btn" onClick={HandleOpen}>
+                      <img src="/images/plus_rounded.png" alt="" />
+                    </button>
                     <input type="checkbox" />
                   </div>
                 </div>
-                <div className="workflow-body">
-                  {workflow.tasks.map((task, key) => {
+                <div className="workstate-body">
+                  {workstate.tasks.map((task, key) => {
                     return (
-                      <div key={key} className="workflow-task" style={{ borderLeftColor: "#ff5010" }}>
+                      <div key={key} className="workstate-task" style={{ borderLeftColor: "#ff5010" }}>
                         <p>{task.title}</p>
                       </div>
                     );
@@ -72,7 +80,7 @@ function ProjectOverview() {
       );
     } else {
       return (
-        <div className="workflow-container">
+        <div className="workstate-container">
           We couldn't get your planning, please try again
         </div>
       );
@@ -81,9 +89,7 @@ function ProjectOverview() {
 
   return (
     <div>
-      <div data-overlay className="overlay"></div>
       <div>
-        {console.log(projectData)}
         <h2>
           <strong>{projectData.name}</strong>{" "}
           {"deadline" in projectData ? ` - ${new Date(projectData.deadline).toLocaleDateString()}` : null}
@@ -97,17 +103,16 @@ function ProjectOverview() {
           <strong>Updated: </strong>{" "}
           {new Date(projectData.updatedAt).toLocaleDateString()}
         </p>
-        <dialog data-modal>
-          idk if this works
-          <button data-close-modal onClick={ModaltestClose}>
-            close
-          </button>
-        </dialog>
-        <button data-open-modal onClick={Modaltestopen}>
-          hello
-        </button>
       </div>
-      {WorkflowContainer()}
+      {WorkstateContainer()}
+      <Modal show={showModal} onHide={HandleClose} size="lg">
+        <Modal.Header>
+          <Modal.Title>Create Task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <FormCreateTask projectData={projectData} />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

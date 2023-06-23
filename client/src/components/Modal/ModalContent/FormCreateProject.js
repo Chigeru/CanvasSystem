@@ -8,7 +8,7 @@ import ReactMarkdown from "react-markdown";
 
 import { postObject } from "../../../lib/AxiosApi.js";
 
-const workflowTemplates = [
+const workstateTemplates = [
   { value: "network", label: "Netværk" },
   { value: "programmer", label: "Programmør" },
   { value: "simple", label: "Simpel" },
@@ -18,12 +18,12 @@ const workflowTemplates = [
 
 function FormCreateProject({departmentsData}) {
   const [newProject, setNewProject] = useState({});
-  const [show, setShow] = useModalClosure();
+  const [showModal, setShowModal] = useModalClosure();
   
   departmentsData.sort(dynamicSort("name"));
 
   function HandleClose() {
-    setShow(false);
+    setShowModal(false);
   }
 
 
@@ -56,15 +56,9 @@ function FormCreateProject({departmentsData}) {
 
       if (typeof newProject.department !== "undefined") {
         if (departmentElement._id === newProject.department) {
-          return options.unshift({
-            label: `${departmentElement.name} - Fremhævet`,
-            options: group,
-          });
+          return options.unshift({label: `${departmentElement.name} - Fremhævet`, options: group,});
         } else {
-          return options.push({
-            label: departmentElement.name,
-            options: group,
-          });
+          return options.push({ label: departmentElement.name, options: group});
         }
       } else {
         return options.push({ label: departmentElement.name, options: group });
@@ -103,7 +97,7 @@ function FormCreateProject({departmentsData}) {
     // if(newProject.name.length < 8) {}
     // else if(typeof(newProject.department) === "undefined") {}
     // else if(newProject.users.length < 1) {}
-    // else if(typeof(newProject.workflows) === "undefined") {}
+    // else if(typeof(newProject.workstates) === "undefined") {}
     // else if(typeof(newProject.deadline) !== "undefined") {
     //   if(new Date(newProject.deadline).getTime() < Date().getTime()) {}
     // }
@@ -113,15 +107,7 @@ function FormCreateProject({departmentsData}) {
     // }
   }
 
-
   function HandleInputsOnChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    setNewProject((projectValues) => ({ ...projectValues, [name]: value }));
-  }
-
-  function HandleDatesOnChange(event) {
     const name = event.target.name;
     const value = event.target.value;
 
@@ -154,7 +140,7 @@ function FormCreateProject({departmentsData}) {
     event.preventDefault();
 
     FormInputCheck();
-    postObject("form/createproject", newProject).then((response) => {
+    postObject("form/projectcreation", newProject).then((response) => {
       if (response.status === 200) {
         setNewProject({});
         HandleClose();
@@ -162,10 +148,16 @@ function FormCreateProject({departmentsData}) {
     });
   }
 
+  function HandleKeyDown(event) {
+    if(event.ctrlKey && event.which === 13) {
+      HandleSubmitForm(event);
+    }
+  }
+
 
 
   return (
-    <form method="modal" onSubmit={HandleSubmitForm}>
+    <form method="modal" onSubmit={HandleSubmitForm}  onKeyDown={HandleKeyDown}>
             <div className="side-by-side-container">
               <div>
                 <div>
@@ -187,7 +179,7 @@ function FormCreateProject({departmentsData}) {
               <div>
                 <div>
                   <label>Layout template</label>
-                  <Select name="workflows" placeholder="Vælg Template" options={workflowTemplates} isSearchable onChange={HandleSelectionChanged} />
+                  <Select name="template" placeholder="Vælg Template" options={workstateTemplates} isSearchable onChange={HandleSelectionChanged} />
                 </div>
 
                 <div>
@@ -208,7 +200,7 @@ function FormCreateProject({departmentsData}) {
             </div>
 
             <div className="mt-2">
-              <input type="submit" className="btn btn-primary" value="Tilføj" />
+              <input type="submit" className="btn btn-primary" value="Tilføj"/>
               <button type="button" className="btn btn-cancel" onClick={HandleClose}>
                 Cancel
               </button>

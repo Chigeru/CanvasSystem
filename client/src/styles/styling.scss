@@ -115,6 +115,19 @@ form {
 }
 
 
+.image-btn {
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+
+  &:focus-visible {
+    outline: 0;
+  }
+}
+
+
 .popout-dark-area {
   position: fixed;
   top: 0;
@@ -182,7 +195,4 @@ footer {
 }
 
 
-
-
-/* ------ Project list ------- */
 

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import TaskSchema from "./Task.js";
 
-export const workflowTypes = ['ready', 'open', 'waiting', "help", 'closed'];
+export const workstateTypes = ['ready', 'open', 'waiting', "help", 'closed'];
 
-const WorkflowSchema = new mongoose.Schema(
+const WorkstateSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -20,15 +20,15 @@ const WorkflowSchema = new mongoose.Schema(
   }, {versionKey: false}
 );
 
-WorkflowSchema.pre(/delete\i/, async function(next) {
+WorkstateSchema.pre(/delete\i/, async function(next) {
   try {
-    const workflow = await this.model.findOne(this.getFilter());
-    await TaskSchema.deleteMany({ _id: { $in: workflow.tasks } });
+    const workstate = await this.model.findOne(this.getFilter());
+    await TaskSchema.deleteMany({ _id: { $in: workstate.tasks } });
     next();
   } catch (err) {
     next(err);
   }
 })
 
-const Workflow = mongoose.model('Workflows', WorkflowSchema);
-export default Workflow;
+const Workstate = mongoose.model('Workstates', WorkstateSchema);
+export default Workstate;

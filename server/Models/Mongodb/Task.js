@@ -3,17 +3,16 @@ import mongoose from "mongoose";
 const TaskSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    description: String,
+    description: {type: String, default: ""},
     labels: [{ type: mongoose.Schema.ObjectId, ref: "TaskLabels" }],
     users: [{ type: mongoose.Schema.ObjectId, ref: "Users" }],
-    weight: { 
+    estimate: { 
       type: Number,
-      default: 1,
-      required: true
+      default: 2,
     },
-    highpriority: { 
-      type: Boolean,
-      default: false
+    priority: { 
+      type: Number,
+      default: 2,
     },
     deadline: Date,
     startedAt: Date,

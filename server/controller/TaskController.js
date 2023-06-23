@@ -1,11 +1,11 @@
 import ProjectMongoose from "../Models/Mongodb/Project.js";
-import WorkflowMongoose from "../Models/Mongodb/Workflow.js";
+import WorkstateMongoose from "../Models/Mongodb/Workstate.js";
 import TaskMongoose from "../Models/Mongodb/Task.js";
 
 export const getTask_list = async (req, res) => {
   try {
-    const { workflowid } = req.params;
-    const projectTasks = await WorkflowMongoose.findById(workflowid).select("tasks").populate('tasks');
+    const { workstateid } = req.params;
+    const projectTasks = await WorkstateMongoose.findById(workstateid).select("tasks").populate('tasks');
 
     res.status(200).json(projectTasks.tasks);
   } catch (error) {
@@ -16,7 +16,7 @@ export const getTask_list = async (req, res) => {
 export const getTask_details = async (req, res) => {
   try {
     const { taskid } = req.params;
-    const data = await TaskMongoose.findById(taskid).populate({path: "workflow", select: "-_id"});
+    const data = await TaskMongoose.findById(taskid).populate({path: "workstate", select: "-_id"});
 
     res.status(200).json(data);
   } catch (error) {
@@ -26,21 +26,21 @@ export const getTask_details = async (req, res) => {
 
 export const postTask = async (req, res) => {
   try {
-    const { workflowid } = req.params;
+    const { workstateid } = req.params;
     const data = new TaskMongoose({
       title: req.body.title,
       description: req.body.description,
       labels: req.body.labels,
       users: req.body.users,
-      weight: req.body.weight,
-      highpriority: req.body.highpriority,
+      estimate: req.body.weight,
+      priority: req.body.priority,
       deadline: new Date().toISOString(),
       startAt: new Date().toISOString()
     });
     
     const dataToSave = await data.save();
 
-    await WorkflowMongoose.updateOne({ _id: workflowid}, {$push: { tasks: data._id } });
+    await WorkstateMongoose.updateOne({ _id: workstateid}, {$push: { tasks: data._id } });
 
 
 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import WorkflowSchema from "./Workflow.js";
+import WorkstateSchema from "./Workstate.js";
 import TaskLabel from "./TaskLabel.js";
 import Department from "./Department.js";
 
@@ -9,7 +9,7 @@ const ProjectSchema = new Schema(
   {
     name: String,
     description: String,
-    workflows: [{ type: mongoose.Schema.ObjectId, ref: "Workflows", default: () => [] }],
+    workstates: [{ type: mongoose.Schema.ObjectId, ref: "Workstates", default: () => [] }],
     labels: [{ type: mongoose.Schema.ObjectId, ref: "TaskLabels", default: () => [] }],
     users: [{ type: mongoose.Schema.ObjectId, ref: "Users", default: () => [] }],
     active: {
@@ -29,7 +29,7 @@ const ProjectSchema = new Schema(
 ProjectSchema.pre(/(delete)\i/, async function (next) {
   try {
     const project = await this.model.findOne(this.getFilter());
-    await WorkflowSchema.deleteMany({ _id: { $in: project.workflow } });
+    await WorkstateSchema.deleteMany({ _id: { $in: project.workstate } });
     await TaskLabel.deleteMany({ _id: { $in: project.labels}})
     // await Department.updateOne({projects: project._id}, {$pull: {_id: project._id}})
     next();

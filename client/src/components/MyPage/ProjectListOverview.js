@@ -23,12 +23,13 @@ function ProjectListOverview({projectData}) {
     let helpNeeded = 0;
     let total = 0;
 
-    if(typeof(projectCurrent.workflows) !== 'undefined') {
-      projectCurrent.workflows.map((workflow) => {
-        workflow.tasks.map((task) => {
-          if(workflow.type === 'closed') progress += task.weight;
-          if(workflow.type === 'help') helpNeeded += task.weight;
-          return total += task.weight;
+    if(typeof(projectCurrent.workstates) !== 'undefined') {
+      projectCurrent.workstates.map((workstate) => {
+        workstate.tasks.map((task) => {
+          const calcTaskProcent = task.estimate * task.priority;
+          if(workstate.type === 'closed') progress += calcTaskProcent;
+          if(workstate.type === 'help') helpNeeded += calcTaskProcent;
+          return total += calcTaskProcent;
         })
         return true;
       })

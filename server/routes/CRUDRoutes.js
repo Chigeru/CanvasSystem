@@ -5,7 +5,7 @@ import AccessLevelRoutes from './CRUD/AccessLevelRoute.js';
 import ProjectRoutes from './CRUD/ProjectRoute.js';
 import UserRoutes from './CRUD/UserRoute.js'; 
 
-import { CreateProductWithExtendedData } from '../controller/FormDataController.js';
+import { CreateProductWithExtendedData, CreateTask } from '../controller/FormDataController.js';
 
 
 
@@ -16,7 +16,7 @@ router.use('/department', DepartmentRoutes);
 router.use('/project', ProjectRoutes);
 router.use('/user', UserRoutes);
 
-router.post('/form/createproject', CreateProductWithExtendedData);
-
+router.post('/form/projectcreation', CreateProductWithExtendedData);
+router.post('/form/taskcreation', CreateTask);
 
 export default router;
