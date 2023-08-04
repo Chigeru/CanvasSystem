@@ -54,6 +54,32 @@ export const CreateTask = async (req, res) => {
   }
 }
 
+export const UpdateTask = async (req, res) => {
+  try {
+
+    const id = req.body._id;
+    
+    /* JS laver reference til req.body, ik polymorphy */
+    if(req.body.workstate !== req.body.prevworkstate) {
+      await WorkstateMongoose.updateOne({_id: req.body.prevworkstate}, {$pull: {tasks: {$eq: id}}});
+      await WorkstateMongoose.updateOne({_id: req.body.workstate}, {$push: {tasks: {_id: id}}});
+    }
+    
+    const updatedEntity = req.body;
+    delete updatedEntity.workstate;
+    delete updatedEntity.prevworkstate;
+    const options = {new: false};
+
+    await TaskMongoose.findByIdAndUpdate(id, updatedEntity, options);
+
+
+
+    res.status(200).send(updatedEntity);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
+
 
 
 /* -------- Helper functions ------------*/

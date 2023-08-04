@@ -103,16 +103,39 @@
       scroll-behavior: auto;
 
       .workstate-task {
-        background-color: rgba(210, 215, 227, 0.1);
-        padding: 0.5rem;
+        position: relative;
+        // background-color: rgba(210, 215, 227, 0.1);
         margin: 0.5rem 0;
         border-radius: 6px;
         border: 1px solid rgb(75, 75, 75);
-        border-left: 3px solid transparent;
         scroll-snap-type: end;
 
         &:hover {
-          background-color: rgba(210, 215, 227, 0.2);
+          background-color: rgba(150, 150, 150, 0.1);
+          cursor: pointer;
+
+          .task-selection {
+            display: block;
+          }
+        }
+
+        & > div:first-of-type {
+          width: 100%;
+          height: 100%;
+          padding: 0.5rem;
+        }
+
+        .task-selection {
+          display: none;
+          position: absolute;
+          border: none;
+          outline: none;
+          top: 0px;
+          right: 0px;
+          width: 24px;
+          background-color: rgba(150,150,150, 0.2);
+          text-align: center;
+          border-radius: 0 5px 0 5px ;
         }
       }
     }

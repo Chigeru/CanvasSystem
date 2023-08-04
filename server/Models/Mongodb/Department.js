@@ -4,8 +4,8 @@ import ProjectSchema from "./Project.js"
 const DepartmentSchema = new mongoose.Schema(
   {
     name : String,
-    projects: [{type: mongoose.Schema.ObjectId, ref: 'Projects'}],
-    users: [{type: mongoose.Schema.ObjectId, ref: 'Users'}]
+    projects: [{type: mongoose.Schema.ObjectId, ref: 'Projects', default: () => []}],
+    users: [{type: mongoose.Schema.ObjectId, ref: 'Users', default: () => []}]
   }, {versionKey: false}
   );
 

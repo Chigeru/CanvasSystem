@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {postObject} from "../../../lib/AxiosApi.js";
+import { useModalClosure } from "../../../pages/Front/MyPage/ProjectOverview.js";
 
 import Select from "react-select";
 import SimpleMDE from "react-simplemde-editor";
@@ -7,21 +8,34 @@ import ReactDOMServer from "react-dom/server";
 import ReactMarkdown from "react-markdown";
 
 const priorityOptions = [
-  {value: 0, label: "Very Low"},
-  {value: 1, label: "Low"},
-  {value: 2, label: "Normal"},
-  {value: 4, label: "High"},
   {value: 8, label: "Very High"},
+  {value: 4, label: "High"},
+  {value: 2, label: "Normal"},
+  {value: 1, label: "Low"},
+  {value: 0, label: "Very Low"},
 ];
 
 const workstateTypes = ["ready", "open", "waiting", "help", "closed"];
 
-function FormCreateTask({propWorkstate= {}, projectData}) {
+
+function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, projectData, updateParentDataFunction = () => {}}) {
   const [newTask, setNewTask] = useState({});
+  const [newTaskOptions, setNewTaskOptions] = useState({});
+  const [ ,setShowModal] = useModalClosure();
 
-
+  useEffect(() => {
+    SelectFillWithCategoryProjectObjects(projectData.workstates, workstateTypes, "type", "workstate")
+    SelectFillWithProjectObjects(projectData.labels, "labels");
+    SelectFillWithProjectObjects(projectData.users, "users");
+    SelectFillWithSimpleData([0,1,2,4,8], "estimate");
+    setNewTaskOptions((values) => ({...values, priority: priorityOptions }))
+    if(typeof(currentTaskData) !== "undefined" && Object.keys(newTask).length === 0) {
+      setNewTask(() => currentTaskData);
+      setNewTask((currentData) => ({...currentData, prevworkstate: workstateFromSelectedTask._id, workstate: workstateFromSelectedTask._id}));
+    }
+  },[currentTaskData, newTask, projectData.labels, projectData.users, projectData.workstates, workstateFromSelectedTask._id])
   
-
+  // console.log(newTask);
 
   const simpleMmdOptions = useMemo(() => {
     return {
@@ -32,8 +46,11 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
     };
   }, []);
 
+  function HandleClose() {
+    setShowModal(false);
+  }
 
-  function SelectFillWithProjectObjects(categoryList) {
+  function SelectFillWithProjectObjects(categoryList, categoryName) {
     var options = [];
     categoryList.map((element) => 
       options.push({
@@ -41,12 +58,11 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
         label: element.name.charAt(0).toUpperCase() + element.name.slice(1)
       })
     );
-
-    return options;
+    setNewTaskOptions((values) => ({...values, [categoryName]: options }))
   }
 
 
-  function SelectFillWithSimpleData(categoryList) {
+  function SelectFillWithSimpleData(categoryList,categoryName) {
     var options = [];
     categoryList.map((element) => 
       options.push({
@@ -54,11 +70,11 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
         label: element
       })
     );
-    return options;
+    setNewTaskOptions((values) => ({...values, [categoryName]: options }))
   }
 
 
-  function SelectFillWithCategoryProjectObjects(categoryList, groupsList, objectProperty) {
+  function SelectFillWithCategoryProjectObjects(categoryList, groupsList, objectProperty, categoryName) {
     var groupSeperated = [];
 
     groupsList.map(groupElement => {
@@ -79,15 +95,59 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
       }
       return null;
     });
-    return groupSeperated;
+
+    setNewTaskOptions((values) => ({...values, [categoryName]: groupSeperated }))
+
   }
 
 
-  function HandleInputOnChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
+  function SetInitialValue(area, list = true) {
+   
+   
+     var getValue = currentTaskData[area]   // list af labels id
+    if(Array.isArray(getValue) && list) {
+      let temp = []
+      projectData[area].map((element) => {   //tjekker alle projekt label igennem
+        getValue.map(tasklabel => {
+          if(element._id === tasklabel) {
+            temp.push({label: element.name, value: element._id});
+            return true;
+          }
+          return false;
+        })
+        return false
+      });
 
-    setNewTask((taskValues) => ({ ...taskValues, [name]: value }));
+      return temp;
+
+    }
+
+    else if(area === "priority") {
+      let temp = priorityOptions.find((prio) => prio.value === getValue);
+      return temp ;
+    }
+    
+    else if(Array.isArray(getValue) && list === false) {
+      let temp = projectData[area].find((element) => {
+        if(element._id === getValue[0]) {
+          return {label: element.name, value: element._id}
+        } else return false;
+      });
+
+      return {label: temp.name, value: temp._id};
+    }
+    
+    else {
+      return typeof(currentTaskData[area]) !== "undefined" ? {label: currentTaskData[area], value: currentTaskData[area]} : null ;
+    }
+  }
+
+  function SetWorkstateInitialValue() {
+    return {label: workstateFromSelectedTask.name , value: workstateFromSelectedTask._id }
+  }
+
+  function HandleInputOnChange(event) {
+    setNewTask((taskValues) => ({ ...taskValues, [event.target.name]: event.target.value }));
   }
 
   function HandleSimpleMdeChanged(value) {
@@ -116,12 +176,24 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
     event.preventDefault();
     ConvertUserToArray();
 
-    postObject("form/taskcreation", newTask).then((response) => {
-      if (response.status === 200) {
-        setNewTask({});
-        // HandleClose();
-      }
-    });
+    if(typeof(newTask._id) !== "undefined") {
+      // console.log(newTask)
+      postObject("form/taskupdate", newTask).then((response) => {
+        if (response.status === 200) {
+          updateParentDataFunction()
+          HandleClose(true);
+        }
+      });
+    }
+    else {
+      postObject("form/taskcreation", newTask).then((response) => {
+        if (response.status === 200) {
+          updateParentDataFunction();
+          HandleClose(true);
+          
+        }
+      });
+    }
   }
 
   function ConvertUserToArray() {
@@ -136,7 +208,7 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
   }
 
   function postTaskinfo() {
-    console.log(newTask)
+    setShowModal(() => (false));
   }
 
   function HandleKeyDown(event) {
@@ -145,49 +217,55 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
     }
   }
 
+  function BtnSubmitText() {
+    if(typeof(currentTaskData._id) === "undefined") {
+      return "Tilføj"
+    }  else return "Opdater"
+  }
+
   return (
-    <form method="modal" onSubmit={HandleSubmitForm} onKeyDown={HandleKeyDown}>
+    <form method="modal" className="modal-form" onSubmit={HandleSubmitForm} onKeyDown={HandleKeyDown}>
       <div className="side-by-side-container">
-        <div>
-          <div>
+        <div className="side-big">
+
+            <textarea name="title" placeholder="Indsæt titel" wrap="soft" className="modal-name" defaultValue={currentTaskData.title} onChange={HandleInputOnChange}/>
+
+          {/* <input type="text" name="title" placeholder="Indsæt titel" defaultValue={currentTaskData.title} onChange={HandleInputOnChange}/> */}
+          {/* <div>
             <label>Titel</label>
-            <input type="text" name="title" onChange={HandleInputOnChange}/>
-          </div>
+            <input type="text" name="title" defaultValue={currentTaskData.title} onChange={HandleInputOnChange}/>
+          </div> */}
           <div>
             <label>Beskrivelse</label>
-            <SimpleMDE name="description" value={newTask.description} onChange={HandleSimpleMdeChanged} options={simpleMmdOptions} />
+            <SimpleMDE name="description" value={currentTaskData.description} onChange={HandleSimpleMdeChanged} options={simpleMmdOptions} />
             </div>
         </div>
 
-        <div>
+        <div className="side-small">
           <div>
             <label>Workstate</label>
-            <Select name="workstate" className="user-select" placeholder="Workstate" isSearchable options={SelectFillWithCategoryProjectObjects(projectData.workstates, workstateTypes, "type")} onChange={HandleSelectionChanged} />
+            <Select name="workstate" className="user-select" defaultValue={SetWorkstateInitialValue} placeholder="Workstate" isSearchable options={newTaskOptions.workstate} onChange={HandleSelectionChanged} />
           </div>
           <div>
             <label>Label</label>
-            <Select name="label" className="user-select" placeholder="Label" isSearchable options={SelectFillWithProjectObjects(projectData.labels)} onChange={HandleSelectionChanged} />
+            <Select name="labels" className="user-select" defaultValue={SetInitialValue("labels", true)} placeholder="Label" isMulti isSearchable options={newTaskOptions.labels} onChange={HandleSelectionChanged} />
           </div>
           <div>
             <label>Owner</label>
-            <Select name="users" className="user-select" placeholder="Owner" isSearchable options={SelectFillWithProjectObjects(projectData.users)} onChange={HandleSelectionChanged} />
+            <Select name="users" className="user-select" defaultValue={SetInitialValue("users", false)} placeholder="Owner" isSearchable options={newTaskOptions.users} onChange={HandleSelectionChanged} />
           </div>
-
-          {/* Estimate, 0,1,2,4,8 */}
           <div>
             <label>Estimeret tid</label>
-            <Select name="estimate" className="user-select" placeholder="estimeret tid" isSearchable options={SelectFillWithSimpleData([0,1,2,4,8])} onChange={HandleSelectionChanged} />
+            <Select name="estimate" className="user-select" defaultValue={SetInitialValue("estimate", false)} placeholder="estimeret tid" isSearchable options={newTaskOptions.estimate} onChange={HandleSelectionChanged} />
           </div>
-
-          {/* Estimate, 0,1,2,4,8 */}
           <div>
             <label>Prioritet</label>
-            <Select name="priority" className="user-select" placeholder="Prioritet" isSearchable options={priorityOptions} onChange={HandleSelectionChanged} />
+            <Select name="priority" className="user-select" defaultValue={SetInitialValue("priority")} placeholder="Prioritet" isSearchable options={newTaskOptions.priority} onChange={HandleSelectionChanged} />
           </div>
         </div>
       </div>
       <div className="mt-2">
-        <input type="submit" className="btn btn-primary" value="Tilføj"/>
+        <input type="submit" className="btn btn-primary" value={BtnSubmitText()} />
         <button type="button" className="btn btn-cancel" onClick={postTaskinfo}>
           Cancel
         </button>
@@ -198,7 +276,7 @@ function FormCreateTask({propWorkstate= {}, projectData}) {
           * relation
           
           workstate
-          * label
+          label
           * deadline
           users
           estimate / weight

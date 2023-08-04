@@ -18,11 +18,12 @@ const workstateTemplates = [
 
 function FormCreateProject({departmentsData}) {
   const [newProject, setNewProject] = useState({});
-  const [showModal, setShowModal] = useModalClosure();
+  const [ , setShowModal] = useModalClosure();
   
   departmentsData.sort(dynamicSort("name"));
 
   function HandleClose() {
+    console.log(newProject)
     setShowModal(false);
   }
 
@@ -157,56 +158,52 @@ function FormCreateProject({departmentsData}) {
 
 
   return (
-    <form method="modal" onSubmit={HandleSubmitForm}  onKeyDown={HandleKeyDown}>
-            <div className="side-by-side-container">
-              <div>
-                <div>
-                  <label>Navn</label>
-                  <input type="text" name="name" placeholder="Projekt navn (min. 8 bogstaver)" onChange={HandleInputsOnChange} />
-                </div>
+    <form method="modal" className="modal-form" onSubmit={HandleSubmitForm} onKeyDown={HandleKeyDown} >
+      <div>
+        <label>Navn</label>
+        <input type="text" name="name" className="modal-name" placeholder="Projekt navn (min. 8 bogstaver)" onChange={HandleInputsOnChange} />
+      </div>
+      <div className="side-by-side-container">
+        <div>
+          <div>
+            <label>Afdeling</label>
+            <Select name="department" className="department-select" placeholder="Vælg afdeling" isClearable={false} options={SelectFillDepartment()} onChange={HandleSelectionChanged} />
+          </div>
 
-                <div>
-                  <label>Afdeling</label>
-                  <Select name="department" className="department-select" placeholder="Vælg afdeling" isClearable={false} options={SelectFillDepartment()} onChange={HandleSelectionChanged} />
-                </div>
+          <div>
+            <label>Brugere</label>
+            <Select name="users" className="user-select" placeholder="Vælg brugere" isMulti isSearchable options={SelectFillUsers()} onChange={HandleSelectionChanged} />
+          </div>
+          <div>
+            <label>Layout template</label>
+            <Select name="template" placeholder="Vælg Template" options={workstateTemplates} isSearchable onChange={HandleSelectionChanged} />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label>Deadline</label>
+            <input type="date" name="deadline" onChange={HandleInputsOnChange} min={new Date().toLocaleDateString("sv")} />
+          </div>
+          <div>
+            <label>Start dato</label>
+            <input type="date" name="startedAt" onChange={HandleInputsOnChange} />
+          </div>
+        </div>
+      </div>
 
-                <div>
-                  <label>Brugere</label>
-                  <Select name="users" className="user-select" placeholder="Vælg brugere" isMulti isSearchable options={SelectFillUsers()} onChange={HandleSelectionChanged} />
-                </div>
-              </div>
+      <div>
+        <label>Beskrivelse</label>
+        <SimpleMDE name="description" value={newProject.description} onChange={HandleSimpleMdeChanged} options={simpleMmdOptions} />
+      </div>
 
-              <div>
-                <div>
-                  <label>Layout template</label>
-                  <Select name="template" placeholder="Vælg Template" options={workstateTemplates} isSearchable onChange={HandleSelectionChanged} />
-                </div>
-
-                <div>
-                  <label>Deadline</label>
-                  <input type="date" name="deadline" onChange={HandleInputsOnChange} min={new Date().toLocaleDateString("sv")} />
-                </div>
-
-                <div>
-                  <label>Start dato</label>
-                  <input type="date" name="startedAt" onChange={HandleInputsOnChange} />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label>Beskrivelse</label>
-              <SimpleMDE name="description" value={newProject.description} onChange={HandleSimpleMdeChanged} options={simpleMmdOptions} />
-            </div>
-
-            <div className="mt-2">
-              <input type="submit" className="btn btn-primary" value="Tilføj"/>
-              <button type="button" className="btn btn-cancel" onClick={HandleClose}>
-                Cancel
-              </button>
-            </div>
-          </form>
-  )
+      <div className="mt-2">
+        <input type="submit" className="btn btn-primary" value="Tilføj" />
+        <button type="button" className="btn btn-cancel" onClick={HandleClose}>
+          Cancel
+        </button>
+      </div>
+    </form>
+  );
 }
 
 export default FormCreateProject

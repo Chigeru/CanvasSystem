@@ -20,6 +20,9 @@ function AdminLayout({route}) {
         <div className="container">
           <div className="row">
             <div className="col-8 d-flex align-items-center">
+              <Link to="/" className="link-categoryPageRef">
+                <img src="/images/aarhusTechLogo.png" alt="" />
+              </Link>
               <nav className="navigation">
                 <ul>
                   <li>

@@ -6,7 +6,7 @@ const ModalClosureContext = createContext();
 export const useModalClosure = () => useContext(ModalClosureContext);
 
 
-function ModalBase({ children, modalTitle = "Info", customButton = null }) {
+function ModalBase({ children, modalTitle = "", customButton = null, modalButton = "New"}) {
   const [showModal, setShowModal] = useState(false);
   const contextvalue = [showModal, setShowModal];
   
@@ -21,15 +21,17 @@ function ModalBase({ children, modalTitle = "Info", customButton = null }) {
     <>
       {customButton == null ? (
         <button className="btn btn-primary" onClick={HandleOpen}>
-          {modalTitle}
+          {modalButton}
         </button>
       ) : null}
 
       <Modal show={showModal} onHide={HandleClose} size="lg">
-        <Modal.Header>
-          <Modal.Title>{modalTitle}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        {modalTitle.length > 0 &&
+          <Modal.Header>
+            <Modal.Title>{modalTitle}</Modal.Title>
+          </Modal.Header>
+        }
+        <Modal.Body>        
           <ModalClosureContext.Provider value={contextvalue}>
             {children}
           </ModalClosureContext.Provider>

@@ -28,7 +28,7 @@ function StartPage() {
     <div>
       <br />
       <div className="container">
-        <ModalBase modalTitle="Create Project">
+        <ModalBase modalTitle="" modalButton="Create Project">
           <FormCreateProject departmentsData={departmentData} />
         </ModalBase>
       </div>

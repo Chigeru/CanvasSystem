@@ -23,7 +23,7 @@ export const getProject_details = async (req, res) => {
 
 export const getProjectAll_list = async (req, res) => {
   try {
-    const projects = await ProjectMongoose.find({}).populate([{path: "workstates", populate: {path: "tasks"}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
+    const projects = await ProjectMongoose.find({}).populate([{path: "workstates", populate: {path: "tasks", populate: {path: "labels"}}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
     res.status(200).json(projects);
   } catch (error) {
     res.status(404).json({message: error});
@@ -44,12 +44,14 @@ export const postProject = async (req, res) => {
 
   
   try {
+    let dateDeadline = new Date(req.body.deadline);
+    let dateStartedAt = new Date(req.body.startedAt);
     const data = new ProjectMongoose({
       name : req.body.name,
       description : req.body.description,
       users : req.body.users,
-      deadline : req.body.deadline,
-      startedAt : req.body.startedAt
+      deadline : dateDeadline.toISOString(),
+      startedAt : dateStartedAt.toISOString()
     });
     const dataToSave = await data.save();
 
