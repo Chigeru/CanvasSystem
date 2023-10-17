@@ -66,12 +66,13 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
-    const { projectid } = req.params;
+    const {workstateid, taskid } = req.params;
 
-    const result = await ProjectMongoose.findOneAndUpdate({_id: projectid}, {$pull: { tasks: { $in: req.body._id } }});
-    await TaskMongoose.deleteOne({_id: req.body._id});
+    // const result = await ProjectMongoose.findOneAndUpdate({_id: projectid}, {$pull: { tasks: { $in: req.body._id } }});
+    await WorkstateMongoose.findOneAndUpdate({_id: workstateid}, {$pull: {tasks: {$in: taskid}}})
+    await TaskMongoose.deleteOne({_id: taskid});
 
-    res.status(200).send(`Deleted task: <${req.body._id}>`);
+    res.status(200).send(`Deleted task: <${taskid}>`);
   } catch (error) {
     res.status(404).json({ message: error });
   }

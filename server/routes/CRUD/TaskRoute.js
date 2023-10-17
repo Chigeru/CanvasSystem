@@ -9,6 +9,6 @@ router.get('/', getTask_list);
 router.get('/:taskid', getTask_details);
 router.post('/post', postTask);
 router.patch('/update', updateTask);
-router.delete('/delete', deleteTask);
+router.delete('/delete/:taskid', deleteTask);
 
 export default router;

@@ -24,10 +24,10 @@ const TaskSchema = new mongoose.Schema(
 *
 * TODO: Begræns hvilke workstates der kigges i, ud fra projektets workstates  
 */
-TaskSchema.pre('remove', function(next) {
-  this.model("Workstate").remove({task: {$pullAll: {_id: this._id}}});
-  next();
-})
+// TaskSchema.pre('remove', function(next) {
+//   this.model("Workstate").remove({task: {$pullAll: {_id: this._id}}});
+//   next();
+// })
 
 const Task = mongoose.model("Tasks", TaskSchema);
 export default Task;

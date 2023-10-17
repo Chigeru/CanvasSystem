@@ -35,13 +35,14 @@ function ProjectOverview() {
     }
   }
 
-  async function AxiosDeleteTask(DataToDelete) {
+  async function AxiosDeleteTask(workstateId, taskId) {
     try {
-      console.log(DataToDelete);
-      var dataURL = encodeURIComponent(JSON.stringify(DataToDelete));
-      console.log(dataURL);
-      // let linkURL = `project/${projectData._id}/task/delete` + dataURL;
-      // deleteRequest(linkURL)
+      let linkURL = `project/${projectData._id}/workstate/${workstateId}/task/delete/${taskId}`;
+      deleteRequest(linkURL).then((response) => {
+        if (response.status === 200) {
+          AxiosGetProjectData(`project/${selectedproject}`, setProjectData);
+        }
+      });
     } catch (error) {
       console.log(error);
     }
@@ -59,7 +60,6 @@ function ProjectOverview() {
   function HandleOpen(wantedTask = {}, wantedWorkstate = {}) {
     setSelectedTask(() => wantedTask);
     setSelectedWorkstate(() => wantedWorkstate);
-    // selectedTask.current = wantedTask;
     setShowModal(true);
   }
   function HandleClose(refetch = false) {
@@ -69,12 +69,11 @@ function ProjectOverview() {
     }
     setShowModal(() => false);
   }
-// console.log(projectData);
 
-  function DeleteTaskButton(taskId) {
+  function DeleteTaskButton(workstateId, taskId) {
 
     if(window.confirm("Are you sure you want to delete this task?") === true) {
-      AxiosDeleteTask(taskId);
+      AxiosDeleteTask(workstateId, taskId);
     }
 
 
@@ -116,7 +115,7 @@ function ProjectOverview() {
                             <p>{task.title}</p>
                           </div>
                         </div>
-                        <button className="task-selection" onClick={() => DeleteTaskButton(task._id)}> x </button>
+                        <button className="task-selection" onClick={() => DeleteTaskButton(workstate._id, task._id)}> x </button>
                       </div>
                     );
                   })}
