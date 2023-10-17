@@ -33,12 +33,13 @@ export const CreateUserAndAttatchToDepartment = async (req, res) => {
 
 export const CreateTask = async (req, res) => {
  try {
+  console.log(req.body);
    const data = new TaskMongoose({
      title: req.body.title,
      description: req.body.description,
      labels: req.body.labels,
      users: req.body.users,
-     weight: req.body.weight,
+     estimate: req.body.estimate,
      priority: req.body.priority,
      deadline: new Date().toISOString(),
      startAt: new Date().toISOString(),

@@ -101,11 +101,11 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
   }
 
 
-  function SetInitialValue(area, list = true) {
+  function SetInitialValue(area, outputList = true) {
    
    
      var getValue = currentTaskData[area]   // list af labels id
-    if(Array.isArray(getValue) && list) {
+    if(Array.isArray(getValue) && outputList) {
       let temp = []
       projectData[area].map((element) => {   //tjekker alle projekt label igennem
         getValue.map(tasklabel => {
@@ -127,7 +127,7 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
       return temp ;
     }
     
-    else if(Array.isArray(getValue) && list === false) {
+    else if(Array.isArray(getValue) && outputList === false) {
       let temp = projectData[area].find((element) => {
         if(element._id === getValue[0]) {
           return {label: element.name, value: element._id}
@@ -177,10 +177,9 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
     ConvertUserToArray();
 
     if(typeof(newTask._id) !== "undefined") {
-      // console.log(newTask)
       postObject("form/taskupdate", newTask).then((response) => {
         if (response.status === 200) {
-          updateParentDataFunction()
+          updateParentDataFunction();
           HandleClose(true);
         }
       });
