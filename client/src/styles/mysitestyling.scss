@@ -1,12 +1,14 @@
+@import "master";
 
 .project-list-entity {
   padding: 20px 10px;
-  border-radius: 25px;
+  border-radius: 15px;
   border: 1px solid #dbdbdb;
-  background-color: rgba(230, 230, 230, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   // color: white;
   margin: 10px 0;
-
+  box-shadow: 2px 2px 5px #dbdbdb;
+  @include transition(0.25s);
   &:hover {
   background-color: rgba(170, 170, 170, 0.2);
 
@@ -41,6 +43,13 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: auto;
+
+  @media (min-width: 768px) {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   .workstate-column {
     padding: 0 0.75rem;
     scroll-snap-align: end;
@@ -104,12 +113,12 @@
 
       .workstate-task {
         position: relative;
-        // background-color: rgba(210, 215, 227, 0.1);
+        background-color: rgba(255, 255, 255, 0.1);
         margin: 0.5rem 0;
         border-radius: 6px;
-        border: 1px solid rgb(75, 75, 75);
+        border: 1px solid rgb(126, 126, 126);
         scroll-snap-type: end;
-
+        @include transition(0.25s);
         &:hover {
           background-color: rgba(150, 150, 150, 0.1);
           cursor: pointer;
@@ -135,7 +144,7 @@
           width: 24px;
           background-color: rgba(150,150,150, 0.2);
           text-align: center;
-          border-radius: 0 5px 0 5px ;
+          border-radius: 0 5px 0 5px;
         }
       }
     }

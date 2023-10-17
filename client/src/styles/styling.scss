@@ -2,11 +2,11 @@
 @import "functions";
 
 #root {
-  min-height: 100vh;
   & > div {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: #f4f4f4;
   }
   & > div > :nth-child(2) {
     flex: 1;
@@ -32,6 +32,20 @@ h4 {
     text-transform: uppercase;
   }
 }
+
+@media (min-width: 992px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #a5a5a5;
+    border-radius: 10px;
+  }
+}
+
 
 a {
   &.linkref {
@@ -96,10 +110,9 @@ header {
       flex: 1 1 50%;
 
       
-      textarea {
+      textarea.modal-name {
         border: none;
-        width: 100%;
-        min-height: 3rem;
+        min-height: 1rem;
         resize: none;
         font-size: x-large;
 
@@ -162,59 +175,8 @@ header {
   }
 }
 
+// Admin area
 
-.popout-dark-area {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(50, 50, 50, 0.5);
-  z-index: 0;
-  
-  .popout-panel {
-    position: fixed;
-    background-color: $light;
-    min-width: 300px;
-    min-height: 100px;
-    padding: 5px;
-    box-shadow: 0px 0px 10px #222222;
-    z-index: 1;
-
-    &.left {
-      top: 0;
-      bottom: 0;
-      left: 0;
-    }
-
-    &.right {
-      top: 0;
-      bottom: 0;
-      right: 0;
-    }
-
-    .form-vertical {
-      & > * {
-        display: block; 
-      }
-      input {
-        width: 100%;
-      }
-    }
-  }
-}
-
-.side-panel-overview {
-  min-width: 150px;
-  min-height: 95vh;
-  border-right: 1px solid rgba(100, 100, 100, 0.5);
-  background-color: #dbdbdb;
-  bottom: 0;
-  padding: 0.5rem;
-    li {
-      list-style: none;
-    }
-}
 
 footer {
   background-color: $primary;

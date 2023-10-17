@@ -252,11 +252,11 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
           </div>
           <div>
             <label>Owner</label>
-            <Select name="users" className="user-select" defaultValue={SetInitialValue("users", false)} placeholder="Owner" isSearchable options={newTaskOptions.users} onChange={HandleSelectionChanged} />
+            <Select name="users" className="user-select" defaultValue={SetInitialValue("users", false)} placeholder="Tildelt" isSearchable options={newTaskOptions.users} onChange={HandleSelectionChanged} />
           </div>
           <div>
             <label>Estimeret tid</label>
-            <Select name="estimate" className="user-select" defaultValue={SetInitialValue("estimate", false)} placeholder="estimeret tid" isSearchable options={newTaskOptions.estimate} onChange={HandleSelectionChanged} />
+            <Select name="estimate" className="user-select" defaultValue={SetInitialValue("estimate", false)} placeholder="Estimeret tid" isSearchable options={newTaskOptions.estimate} onChange={HandleSelectionChanged} />
           </div>
           <div>
             <label>Prioritet</label>
