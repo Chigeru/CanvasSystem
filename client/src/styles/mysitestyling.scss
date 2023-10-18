@@ -1,5 +1,6 @@
 @import "master";
 
+
 .project-list-entity {
   padding: 20px 10px;
   border-radius: 15px;
@@ -7,7 +8,7 @@
   background-color: rgba(255, 255, 255, 0.1);
   // color: white;
   margin: 10px 0;
-  box-shadow: 2px 2px 5px #dbdbdb;
+  box-shadow: 2px 2px 5px rgba(150, 150, 150, 0.6);
   @include transition(0.25s);
   &:hover {
   background-color: rgba(170, 170, 170, 0.2);
@@ -35,14 +36,54 @@
   }
 }
 
-.workstate-container {
-  // background-color: #2d2d2d;
-  // color: #fff;
+
+
+.project-canvas{
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-top: 0;
+  margin-bottom: auto;
+  
+  & > div:last-child {
+    padding-left: 10px;
+  }
+  // overflow: hidden;
+}
+
+.project-sidemenu {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: $dark;
+
+
+
+  img {
+    margin: 12.5px;
+    width: 25px;
+    height: auto;
+  }
+}
+
+.project-canvas-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   overflow-y: hidden;
-  overflow-x: auto;
+}
+.project-canvas-info {
+  width: 400px;
+}
+
+.workstate-container {
+  display: flex;
   scroll-snap-type: x mandatory;
   scroll-behavior: auto;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 100%;
+  gap: 1rem;
 
   // @media (min-width: 768px) {
   //   &::-webkit-scrollbar {
@@ -51,15 +92,15 @@
   // }
 
   .workstate-column {
-    padding: 0 0.75rem;
     scroll-snap-align: end;
+    padding-right: 0.75rem;
 
     .workstate-head {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      min-width: 250px;
+      width: 250px;
       border-bottom: 1px solid rgba(170, 170, 170, 0.8);
 
 
@@ -112,7 +153,7 @@
     }
 
     .workstate-body {
-      height: 60vh;
+      height: 100%;
       overflow-y: auto;
       scroll-snap-type: x mandatory;
       scroll-behavior: auto;
@@ -132,13 +173,32 @@
           .task-selection {
             display: block;
           }
-          
         }
 
         & > div:first-of-type {
           width: 100%;
           height: 100%;
           padding: 0.5rem;
+        }
+
+        .task-card-area {
+          display: flex;
+          flex: 1 1 row wrap;
+          .task-card {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            font-size: small;
+            border-radius: 10px;
+            padding: 2px 6px;
+            margin: 2px;
+            background-color: rgba(150, 150, 150, 0.2);
+
+            .color-circle {
+              padding: 7.5px;
+              border-radius: 50%;
+            }
+          }
         }
 
         .task-selection {

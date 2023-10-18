@@ -1,22 +1,22 @@
-import React, { useEffect, useState, useContext, createContext } from "react";
+import React, {  useEffect,  useState,  useContext,  createContext,  useRef,} from "react";
 import Modal from "react-bootstrap/Modal";
 import { useParams } from "react-router-dom";
 import { getRequest, deleteRequest } from "../../../lib/AxiosApi.js";
+import FilterMenu from "../../../components/MyPage/FilterMenu.js";
+
 import ReactMarkdown from "react-markdown";
-
-
 import FormCreateTask from "../../../components/Modal/ModalContent/FormCreateTask.js";
 
 const ModalClosureContext = createContext();
 export const useModalClosure = () => useContext(ModalClosureContext);
 
-
 function ProjectOverview() {
-  const [projectData, setProjectData] = useState({});
   let { selectedproject } = useParams();
-  const [selectedTask, setSelectedTask] = useState({});
-  const [selectedWorkstate, setSelectedWorkstate] = useState({});
+  const [projectData, setProjectData] = useState({});
+  const checkedTasks = useRef([]);
 
+  const [modalSelectedTask, setModalSelectedTask] = useState({});
+  const [modalSelectedWorkstate, setModalSelectedWorkstate] = useState({});
   const [showModal, setShowModal] = useState(false);
   const contextvalue = [showModal, setShowModal];
 
@@ -57,27 +57,30 @@ function ProjectOverview() {
     }
   }
 
+  function RegisterTaskChecked(selectedTask, checker) {
+    if (checker) {
+    }
+  }
+
   function HandleOpen(wantedTask = {}, wantedWorkstate = {}) {
-    setSelectedTask(() => wantedTask);
-    setSelectedWorkstate(() => wantedWorkstate);
+    setModalSelectedTask(() => wantedTask);
+    setModalSelectedWorkstate(() => wantedWorkstate);
     setShowModal(true);
   }
   function HandleClose(refetch = false) {
-    console.log("test: ", refetch)
-    if(refetch) {
+    console.log("test: ", refetch);
+    if (refetch) {
       AxiosGetProjectData(`project/${selectedproject}`, setProjectData);
     }
     setShowModal(() => false);
   }
 
   function DeleteTaskButton(workstateId, taskId) {
-
-    if(window.confirm("Are you sure you want to delete this task?") === true) {
+    if (window.confirm("Are you sure you want to delete this task?") === true) {
       AxiosDeleteTask(workstateId, taskId);
     }
-
-
   }
+
   function WorkstateContainer() {
     if (
       typeof projectData.workstates === "object" &&
@@ -99,22 +102,54 @@ function ProjectOverview() {
                   </div>
                   <div className="workstate-controls">
                     <img src="/images/three_dots.png" alt="" />
-                    <button className="image-btn" onClick={() => HandleOpen({}, workstate)}>
+                    <button
+                      className="image-btn"
+                      onClick={() => HandleOpen({}, workstate)}
+                    >
                       <img src="/images/plus_rounded.png" alt="" />
                     </button>
-                    <input type="checkbox" className="workstate-children-selection"/>
+                    <input
+                      type="checkbox"
+                      className="workstate-children-selection"
+                    />
                   </div>
                 </div>
                 <div className="workstate-body">
                   {workstate.tasks.map((task, key) => {
                     return (
-                      <div key={key} className="workstate-task" style={{borderLeft: `3px solid ${typeof(task.labels) !== "undefined" ? task.labels[0].color : "black"}`}}>
+                      <div
+                        key={key}
+                        className="workstate-task"
+                        style={{
+                          borderLeft: `3px solid ${
+                            typeof task.labels !== "undefined"
+                              ? task.labels[0].color
+                              : "black"
+                          }`,
+                        }}
+                      >
                         <div onClick={() => HandleOpen(task, workstate)}>
                           <div>
                             <p>{task.title}</p>
+                            <div className="task-card-area">
+                              {task.labels.map((label, key) => {
+                                return (
+                                  <div className="task-card" key={key}>
+                                    {/* <div className="color-circle" style={{background: `${label.color}`}></div> */}
+                                    <div className="task-card-name">
+                                      {label.name}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         </div>
-                        <button className="task-selection" onClick={() => DeleteTaskButton(workstate._id, task._id)}> x </button>
+                        <button
+                          className="task-selection"
+                          onClick={() => DeleteTaskButton(workstate._id, task._id)}>
+                          x
+                        </button>
                       </div>
                     );
                   })}
@@ -133,39 +168,48 @@ function ProjectOverview() {
     }
   }
 
-
-
   return (
-    <div>
-      <div>
-        <h2>
-          <strong>{projectData.name}</strong>
+    <div className="project-canvas">
+      <FilterMenu />
+      <div className="project-canvas-content">
+        <div className="projekt-canvas-info">
+          <h2>
+            <strong>{projectData.name}</strong>
 
-          {projectData.hasOwnProperty("deadline") && ` - ${new Date(projectData.deadline).toLocaleDateString()}`}
-          {/* {"deadline" in projectData ? ` - ${new Date(projectData.deadline).toLocaleDateString()}` : null} */}
-        </h2>
-        {projectData.hasOwnProperty("deadline") === true && <p>{new Date(projectData.deadline).toLocaleDateString()}</p>}
-      </div>
-      <div className="project-expand-description-area">
-      <ReactMarkdown children={projectData.description} />
-        <p>
-          <strong>Created: </strong>{" "}
-          {new Date(projectData.createdAt).toLocaleDateString()} -{" "}
-          <strong>Updated: </strong>{" "}
-          {new Date(projectData.updatedAt).toLocaleDateString()}
-        </p>
-      </div>
-      {WorkstateContainer()}
-      <Modal show={showModal} onHide={HandleClose} size="lg">
-        {/* <Modal.Header>
+            {projectData.hasOwnProperty("deadline") &&
+              ` - ${new Date(projectData.deadline).toLocaleDateString()}`}
+            {/* {"deadline" in projectData ? ` - ${new Date(projectData.deadline).toLocaleDateString()}` : null} */}
+          </h2>
+          {projectData.hasOwnProperty("deadline") === true && (
+            <p>{new Date(projectData.deadline).toLocaleDateString()}</p>
+          )}
+        </div>
+        <div className="project-expand-description-area">
+          <ReactMarkdown children={projectData.description} />
+          <p>
+            <strong>Created: </strong>{" "}
+            {new Date(projectData.createdAt).toLocaleDateString()} -{" "}
+            <strong>Updated: </strong>{" "}
+            {new Date(projectData.updatedAt).toLocaleDateString()}
+          </p>
+        </div>
+        {WorkstateContainer()}
+        <Modal show={showModal} onHide={HandleClose} size="lg">
+          {/* <Modal.Header>
           <Modal.Title>Task</Modal.Title>
         </Modal.Header> */}
-        <Modal.Body>
-          <ModalClosureContext.Provider value={contextvalue}>
-            <FormCreateTask currentTaskData={selectedTask} projectData={projectData} workstateFromSelectedTask={selectedWorkstate} updateParentDataFunction={AxiosGetUpdatedProjectData}/>
-          </ModalClosureContext.Provider>
-        </Modal.Body>
-      </Modal>
+          <Modal.Body>
+            <ModalClosureContext.Provider value={contextvalue}>
+              <FormCreateTask
+                currentTaskData={modalSelectedTask}
+                projectData={projectData}
+                workstateFromSelectedTask={modalSelectedWorkstate}
+                updateParentDataFunction={AxiosGetUpdatedProjectData}
+              />
+            </ModalClosureContext.Provider>
+          </Modal.Body>
+        </Modal>
+      </div>
     </div>
   );
 }

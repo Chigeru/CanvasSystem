@@ -102,11 +102,11 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
   function SetInitialValue(area, outputList = true) {
    
    
-    var getValue = currentTaskData[area]   // list af labels id
-    if(Array.isArray(getValue) && outputList) {
+    var taskAreaData = currentTaskData[area]
+    if(Array.isArray(taskAreaData) && outputList) {
       let temp = []
-      projectData[area].map((element) => {   //tjekker alle projekt label igennem
-        getValue.map(tasklabel => {
+      projectData[area].map((element) => {   
+        taskAreaData.map(tasklabel => {
           if(element._id === tasklabel._id ) {
             temp.push({label: element.name, value: element._id});
             return true;
@@ -121,13 +121,13 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
     }
 
     else if(area === "priority") {
-      let temp = priorityOptions.find((prio) => prio.value === getValue);
+      let temp = priorityOptions.find((prio) => prio.value === taskAreaData);
       return temp ;
     }
     
-    else if(Array.isArray(getValue) && outputList === false) {
+    else if(Array.isArray(taskAreaData) && outputList === false) {
       let temp = projectData[area].find((element) => {
-        if(element._id === getValue[0]) {
+        if(element._id === taskAreaData[0]) {
           return {label: element.name, value: element._id}
         } else return false;
       });
