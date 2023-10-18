@@ -101,6 +101,12 @@
         img {
           height: 20px;
         }
+        .x-delete {
+          @include transition(0.25s);
+          &:hover {
+            transform: rotate(45deg);
+          }
+        }
       }
 
     }
@@ -126,6 +132,7 @@
           .task-selection {
             display: block;
           }
+          
         }
 
         & > div:first-of-type {

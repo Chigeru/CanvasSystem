@@ -26,7 +26,7 @@ function ProjectOverview() {
     }
   }, [selectedproject]);
 
-  async function AxiosGetProjectData(searchString, setVariableValue) {
+  async function AxiosGetProjectData(searchString) {
     try {
       const fetchedData = await getRequest(searchString);
       setProjectData(() => fetchedData.data);
@@ -40,7 +40,7 @@ function ProjectOverview() {
       let linkURL = `project/${projectData._id}/workstate/${workstateId}/task/delete/${taskId}`;
       deleteRequest(linkURL).then((response) => {
         if (response.status === 200) {
-          AxiosGetProjectData(`project/${selectedproject}`, setProjectData);
+          AxiosGetProjectData(`project/${selectedproject}`);
         }
       });
     } catch (error) {
@@ -78,7 +78,6 @@ function ProjectOverview() {
 
 
   }
-  
   function WorkstateContainer() {
     if (
       typeof projectData.workstates === "object" &&
@@ -103,13 +102,13 @@ function ProjectOverview() {
                     <button className="image-btn" onClick={() => HandleOpen({}, workstate)}>
                       <img src="/images/plus_rounded.png" alt="" />
                     </button>
-                    <input type="checkbox" />
+                    <input type="checkbox" className="workstate-children-selection"/>
                   </div>
                 </div>
                 <div className="workstate-body">
                   {workstate.tasks.map((task, key) => {
                     return (
-                      <div key={key} className="workstate-task" style={{ backgroundColor: task.labels[0].color }}>
+                      <div key={key} className="workstate-task" style={{borderLeft: `3px solid ${typeof(task.labels) !== "undefined" ? task.labels[0].color : "black"}`}}>
                         <div onClick={() => HandleOpen(task, workstate)}>
                           <div>
                             <p>{task.title}</p>

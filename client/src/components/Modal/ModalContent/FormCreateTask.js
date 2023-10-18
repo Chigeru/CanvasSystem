@@ -34,8 +34,6 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
       setNewTask((currentData) => ({...currentData, prevworkstate: workstateFromSelectedTask._id, workstate: workstateFromSelectedTask._id}));
     }
   },[currentTaskData, newTask, projectData.labels, projectData.users, projectData.workstates, workstateFromSelectedTask._id])
-  
-  // console.log(newTask);
 
   const simpleMmdOptions = useMemo(() => {
     return {
@@ -104,12 +102,12 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
   function SetInitialValue(area, outputList = true) {
    
    
-     var getValue = currentTaskData[area]   // list af labels id
+    var getValue = currentTaskData[area]   // list af labels id
     if(Array.isArray(getValue) && outputList) {
       let temp = []
       projectData[area].map((element) => {   //tjekker alle projekt label igennem
         getValue.map(tasklabel => {
-          if(element._id === tasklabel) {
+          if(element._id === tasklabel._id ) {
             temp.push({label: element.name, value: element._id});
             return true;
           }
