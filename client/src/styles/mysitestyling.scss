@@ -52,10 +52,32 @@
 }
 
 .project-sidemenu {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  background-color: $dark;
+  display: block;
+  width: 150px;
+  
+  flex: 0 0;
+  background-color: rgba(30, 30, 30, 0.6);
+  @include transition(0.2s);
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  
+  label {
+    display: none;
+    color: transparent;
+    @include transition(0.2s);
+  }
+
+  &.expanded {
+    label {
+      color: #fff;
+      display: block;
+    }
+  }
+
 
 
 
@@ -63,6 +85,10 @@
     margin: 12.5px;
     width: 25px;
     height: auto;
+
+    &.selected {
+      background-color: $dark;
+    }
   }
 }
 
@@ -153,10 +179,10 @@
     }
 
     .workstate-body {
-      height: 100%;
+      height: 70vh;
       overflow-y: auto;
       scroll-snap-type: x mandatory;
-      scroll-behavior: auto;
+      scroll-snap-align: center;
 
       .workstate-task {
         position: relative;
@@ -181,23 +207,48 @@
           padding: 0.5rem;
         }
 
+        .task-card-title {
+          width: 90%;
+        }
+
         .task-card-area {
           display: flex;
-          flex: 1 1 row wrap;
-          .task-card {
-            display: flex;
-            align-items: center;
-            flex-direction: row;
-            font-size: small;
-            border-radius: 10px;
-            padding: 2px 6px;
-            margin: 2px;
-            background-color: rgba(150, 150, 150, 0.2);
+          flex: 1;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: space-between;
 
-            .color-circle {
-              padding: 7.5px;
-              border-radius: 50%;
+          .task-card-labels {
+            display: flex;
+            flex-direction: row;
+
+            .task-card-labels-content {
+              display: flex;
+              align-items: center;
+              font-size: small;
+              padding: 0 6px;
+              margin-right: 6px;
+              border-radius: 10px;
+              background-color: rgba(150, 150, 150, 0.2);
+              
             }
+          }
+          
+
+          .task-responsible-icons {
+            display: flex;
+            flex-direction: row-reverse;
+
+             & > div {
+              border-radius: 50%;
+              display: inline-block;
+              height: 100%;
+              padding: 0% 100% 0% 100%;
+              background-color: rgba(150, 150, 150, 0.4);
+              span {
+                text-transform: capitalize;
+              }
+             }
           }
         }
 

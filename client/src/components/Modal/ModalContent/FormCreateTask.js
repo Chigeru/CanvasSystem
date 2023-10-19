@@ -127,7 +127,7 @@ function FormCreateTask({currentTaskData = {}, workstateFromSelectedTask = {}, p
     
     else if(Array.isArray(taskAreaData) && outputList === false) {
       let temp = projectData[area].find((element) => {
-        if(element._id === taskAreaData[0]) {
+        if(element._id === taskAreaData[0]._id) {
           return {label: element.name, value: element._id}
         } else return false;
       });

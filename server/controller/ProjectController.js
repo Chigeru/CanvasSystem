@@ -33,7 +33,7 @@ export const getProjectAll_list = async (req, res) => {
 export const getProjectAll_details = async (req, res) => {
   try {
     const { projectid }  = req.params;
-    const projects = await ProjectMongoose.findById(projectid).populate([{path: "workstates", populate: {path: "tasks",  populate: {path: "labels"}}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
+    const projects = await ProjectMongoose.findById(projectid).populate([{path: "workstates", populate: {path: "tasks",  populate: {path: "labels users"}}}, {path: "users", select: "-email -password"}, {path: "labels"}]);
     res.status(200).json(projects);
   } catch (error) {
     res.status(404).json({message: error});

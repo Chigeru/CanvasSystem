@@ -1,4 +1,4 @@
-import React, {  useEffect,  useState,  useContext,  createContext,  useRef,} from "react";
+import React, { useEffect, useState, useContext, createContext, useRef} from "react";
 import Modal from "react-bootstrap/Modal";
 import { useParams } from "react-router-dom";
 import { getRequest, deleteRequest } from "../../../lib/AxiosApi.js";
@@ -81,6 +81,8 @@ function ProjectOverview() {
     }
   }
 
+  console.log(projectData);
+
   function WorkstateContainer() {
     if (
       typeof projectData.workstates === "object" &&
@@ -94,7 +96,7 @@ function ProjectOverview() {
                 <div className="workstate-head">
                   <div className="workstate-headline">
                     <div className="workstate-headline-text">
-                      {workstate.name}
+                      <span>{workstate.name}</span>
                     </div>
                     <span className="task-counter">
                       {workstate.tasks.length}
@@ -108,10 +110,10 @@ function ProjectOverview() {
                     >
                       <img src="/images/plus_rounded.png" alt="" />
                     </button>
-                    <input
+                    {/* <input
                       type="checkbox"
                       className="workstate-children-selection"
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="workstate-body">
@@ -130,25 +132,43 @@ function ProjectOverview() {
                       >
                         <div onClick={() => HandleOpen(task, workstate)}>
                           <div>
-                            <p>{task.title}</p>
+                            <p className="task-card-title">{task.title}</p>
                             <div className="task-card-area">
-                              {task.labels.map((label, key) => {
-                                return (
-                                  <div className="task-card" key={key}>
-                                    {/* <div className="color-circle" style={{background: `${label.color}`}></div> */}
-                                    <div className="task-card-name">
-                                      {label.name}
+                              <div className="task-card-labels">
+                                {task.labels.map((label, key) => {
+                                  return (
+                                    <div className="task-card-labels-content" key={key}>
+                                      {/* <div className="color-circle" style={{background: `${label.color}`}></div> */}
+                                      <div className="task-card-name">
+                                        <span>
+                                        {label.name}
+                                        </span>
+                                      </div>
                                     </div>
-                                  </div>
-                                );
-                              })}
+                                  );
+                                })}
+                              </div>
+                              <div className="task-responsible-icons">
+                                {task.users.map((user, key) => {
+                                  return (
+                                    <div key={key}>
+                                      <span>
+                                        {user.name[0]}
+                                      </span>
+                                    </div>
+                                  )
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>
                         <button
                           className="task-selection"
-                          onClick={() => DeleteTaskButton(workstate._id, task._id)}>
-                          x
+                          onClick={() =>
+                            DeleteTaskButton(workstate._id, task._id)
+                          }
+                        >
+                          <span>x</span>
                         </button>
                       </div>
                     );
@@ -167,6 +187,8 @@ function ProjectOverview() {
       );
     }
   }
+
+
 
   return (
     <div className="project-canvas">

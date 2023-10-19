@@ -7,13 +7,17 @@ $success :    #179c17;
 $info:        cyan;
 $warning:     yellow;
 $danger:      red;
-$light:       #ededed;
+$light:       #f4f4f4;
 $dark:        #121212;
 
 $darkBackground: #2d2d2d;
 
 $fontcolor: gray;
 $fontcolor-invert: white;
+
+
+$primary-background: $light;
+$primary-font-color: $fontcolor; 
 
 
 @mixin transition($duration: 0.45s) {
