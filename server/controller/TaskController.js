@@ -66,9 +66,10 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
-    const {workstateid, taskid } = req.params;
+    const {projectid, workstateid, taskid } = req.params;
 
     // const result = await ProjectMongoose.findOneAndUpdate({_id: projectid}, {$pull: { tasks: { $in: req.body._id } }});
+    await ProjectMongoose.findOneAndUpdate({_id: projectid}, {$set: {}});         /* this is a hack... dont touch unless you fixed the issue*/ 
     await WorkstateMongoose.findOneAndUpdate({_id: workstateid}, {$pull: {tasks: {$in: taskid}}})
     await TaskMongoose.deleteOne({_id: taskid});
 

@@ -12,8 +12,6 @@ export default function FilterMenu() {
     return "project-sidemenu " + (expanded? "expanded" : "");
   }
 
-console.log(`expanded: ${expanded}`)
-
   return (
     <div className={MenuClass()}>
       <div>

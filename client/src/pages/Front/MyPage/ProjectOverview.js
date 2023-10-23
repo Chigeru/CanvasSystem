@@ -81,7 +81,6 @@ function ProjectOverview() {
     }
   }
 
-  console.log(projectData);
 
   function WorkstateContainer() {
     if (
